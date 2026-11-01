@@ -195,7 +195,7 @@ export default async function AccountPage({
         />
       </Card>
 
-      <div className="grid gap-5 xl:grid-cols-[1.7fr_1fr]">
+      <div className="grid gap-5 xl:grid-cols-[1.7fr_1fr] [&>*]:min-w-0">
         <Card className="p-5 sm:p-6">
           <TradingCalendar days={calendarDays} locale={locale} />
         </Card>

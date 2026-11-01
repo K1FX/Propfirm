@@ -18,6 +18,7 @@ export function SiteFooter() {
         { href: "/rules", label: t("Nav.rules") },
         { href: "/pass", label: t("Nav.pass", { passName: brand.passName }) },
         { href: "/payouts", label: t("Nav.payouts") },
+        { href: "/leaderboard", label: t("Nav.leaderboard") },
       ],
     },
     {

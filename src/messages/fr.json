@@ -13,7 +13,8 @@
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "main": "Navigation principale",
-    "dashboard": "Espace trader"
+    "dashboard": "Espace trader",
+    "leaderboard": "Classement"
   },
   "Promo": {
     "text": "-{discount} % sur toutes les évaluations avec le code",
@@ -170,7 +171,8 @@
     "terms": "CGV",
     "privacy": "Confidentialité",
     "notice": "Mentions légales",
-    "risk": "Avertissement sur les risques"
+    "risk": "Avertissement sur les risques",
+    "leaderboard": "Classement"
   },
   "Styleguide": {
     "title": "Design system",
@@ -201,7 +203,8 @@
       "referrals": "Parrainage",
       "profile": "Profil",
       "backToSite": "Retour au site",
-      "newChallenge": "Nouveau challenge"
+      "newChallenge": "Nouveau challenge",
+      "leaderboard": "Classement"
     },
     "overview": {
       "greeting": "Bonjour, {name}",
@@ -381,5 +384,39 @@
       "title": "Bientôt disponible",
       "desc": "Cette section arrive dans une prochaine phase."
     }
+  },
+  "Leaderboard": {
+    "eyebrow": "Classement",
+    "title": "Les meilleurs traders Aurum",
+    "subtitle": "Classés par profit réalisé sur leurs comptes financés. Pseudos uniquement : chaque trader peut choisir de ne pas apparaître.",
+    "demo": "Données de démonstration : pseudos et montants fictifs. Le classement réel s'affichera dès les premiers comptes financés.",
+    "periods": {
+      "label": "Période",
+      "season": "Saison en cours",
+      "month": "Ce mois-ci",
+      "allTime": "Depuis toujours"
+    },
+    "sizes": {
+      "label": "Taille de compte",
+      "all": "Toutes"
+    },
+    "cols": {
+      "rank": "Rang",
+      "trader": "Trader",
+      "pass": "Rang Pass",
+      "account": "Compte",
+      "days": "Jours",
+      "profit": "Profit"
+    },
+    "change": {
+      "up": "Monte de {n} places",
+      "down": "Descend de {n} places",
+      "same": "Position inchangée"
+    },
+    "you": "vous",
+    "yourPosition": "Votre position",
+    "empty": "Aucun trader pour ce filtre.",
+    "podium": "Podium",
+    "dashboardSubtitle": "Votre position parmi les traders financés, par profit réalisé."
   }
 }

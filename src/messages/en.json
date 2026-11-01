@@ -13,7 +13,8 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "main": "Main navigation",
-    "dashboard": "Trader area"
+    "dashboard": "Trader area",
+    "leaderboard": "Leaderboard"
   },
   "Promo": {
     "text": "{discount}% off every evaluation with code",
@@ -170,7 +171,8 @@
     "terms": "Terms of sale",
     "privacy": "Privacy",
     "notice": "Legal notice",
-    "risk": "Risk disclosure"
+    "risk": "Risk disclosure",
+    "leaderboard": "Leaderboard"
   },
   "Styleguide": {
     "title": "Design system",
@@ -201,7 +203,8 @@
       "referrals": "Referrals",
       "profile": "Profile",
       "backToSite": "Back to site",
-      "newChallenge": "New challenge"
+      "newChallenge": "New challenge",
+      "leaderboard": "Leaderboard"
     },
     "overview": {
       "greeting": "Hello, {name}",
@@ -381,5 +384,39 @@
       "title": "Coming soon",
       "desc": "This section is coming in a later phase."
     }
+  },
+  "Leaderboard": {
+    "eyebrow": "Leaderboard",
+    "title": "Top Aurum traders",
+    "subtitle": "Ranked by realized profit on their funded accounts. Usernames only: every trader can opt out.",
+    "demo": "Demo data: fictional usernames and amounts. The real leaderboard will appear with the first funded accounts.",
+    "periods": {
+      "label": "Period",
+      "season": "Current season",
+      "month": "This month",
+      "allTime": "All time"
+    },
+    "sizes": {
+      "label": "Account size",
+      "all": "All"
+    },
+    "cols": {
+      "rank": "Rank",
+      "trader": "Trader",
+      "pass": "Pass rank",
+      "account": "Account",
+      "days": "Days",
+      "profit": "Profit"
+    },
+    "change": {
+      "up": "Up {n} places",
+      "down": "Down {n} places",
+      "same": "No change"
+    },
+    "you": "you",
+    "yourPosition": "Your position",
+    "empty": "No traders for this filter.",
+    "podium": "Podium",
+    "dashboardSubtitle": "Your position among funded traders, by realized profit."
   }
 }

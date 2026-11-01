@@ -218,6 +218,7 @@ Les performances passées ne préjugent pas des performances futures. » Textes 
 - [x] Phase 0 – Setup (Next.js 16.4, Tailwind 4, next-intl fr/en, Drizzle + Supabase prêts, Vitest + Playwright, structure §10)
 - [x] Phase 1 – Design system (`components/ui` : Button/ButtonLink, Card, Badge, ProgressBar, AccountPass (billet), Section, Reveal, Logo), page d'accueil §3.5, `/styleguide`, pages « en construction » via `(marketing)/[slug]`. Config remplie en avance : `plans.ts`, `rules.ts`, `pass.ts` (rangs/XP), `promo.ts` (code PLACEHOLDER).
 - [~] Intérieur (en avance, en mode démo) : moteur de règles `server/rules` (drawdown EOD trailing + lock, consistance, jours min, contrats, perte jour, alertes 80 %) + `lib/session.ts` (jour CME Chicago) + `TradingProvider`/`MockTradingProvider` – tous testés. Dashboard trader : vue d'ensemble, comptes, page compte refaite façon terminal premium (5 indicateurs, courbe avec légende, barre minimum→départ→objectif, calendrier P&L/trades, règles, trades), compte validé = contour lumineux animé + « Passer en Funded », Pass (rang, piste 30 paliers, missions, classement), payouts. Données : `server/demo/data.ts` (DÉMO, à remplacer par la base en Phase 3). « Connexion » pointe vers /dashboard en attendant l'auth.
+- [~] Classement (choix : par profit $ réalisé sur comptes financés) : page publique `/leaderboard` (dans le menu) + `/dashboard/leaderboard` avec position de l'utilisateur épinglée. Podium top 3, filtres période (saison / mois / toujours) et taille de compte. Données : `server/leaderboard/service.ts` (DÉMO, bandeau obligatoire). À faire en Phase 3 : vraies données + option « ne pas apparaître » dans le profil.
 - [ ] Phase 2 – Pages publiques
 
 Notes techniques :
@@ -227,4 +228,5 @@ Notes techniques :
 - Français : espace insécable (U+00A0) avant `%` dans messages/fr.json.
 - Cache Components : `dynamicParams` est interdit ; un paramètre non listé dans `generateStaticParams` peut répondre 200 à la 1re visite avant d'afficher la 404 (`notFound()`). Tester le contenu, pas le statut.
 - `tailwind-merge` (cn) supprime les classes inconnues qui ressemblent à `border-*`/`ring-*` : nommer les utilitaires maison autrement (ex. `animated-glow`).
+- Grilles : ajouter `min-w-0` aux enfants d'une grille qui contient un élément large (tableau, calendrier), sinon débordement horizontal sur mobile. Un test e2e vérifie l'absence de débordement.
 - Langue : utiliser `toLocale()` (`src/i18n/routing.ts`) pour valider le paramètre `[locale]`.
