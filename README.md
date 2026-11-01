@@ -1,4 +1,4 @@
-# [NOM] · Prop firm Futures
+# Aurum Funded · Prop firm Futures
 
 Référence du projet : [`CLAUDE.md`](./CLAUDE.md).
 

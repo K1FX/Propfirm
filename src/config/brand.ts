@@ -1,12 +1,12 @@
 /**
  * Configuration de marque – SEUL endroit où le nom de la marque est défini (CLAUDE.md §4).
- * Remplacer « [NOM] » le jour où le nom est fixé.
+ * Le domaine et l'email de support restent des placeholders tant que le domaine n'est pas acheté.
  */
 export const brand = {
-  name: "[NOM]",
+  name: "Aurum Funded",
   domain: "example.com",
   supportEmail: "support@example.com",
-  passName: "[NOM] Pass",
+  passName: "Aurum Pass",
   social: {
     discord: "",
     x: "",

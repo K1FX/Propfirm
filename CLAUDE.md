@@ -1,10 +1,10 @@
-# CLAUDE.md – [NOM] · Prop firm Futures
+# CLAUDE.md – Aurum Funded · Prop firm Futures
 
 ## 1. Le projet
-[NOM] est une prop firm spécialisée dans les **futures (marchés CME)**, positionnée comme Lucid Trading ou Tradeify.
+Aurum Funded est une prop firm spécialisée dans les **futures (marchés CME)**, positionnée comme Lucid Trading ou Tradeify.
 Un trader achète une évaluation, trade sur un compte **simulé**, et s'il atteint l'objectif sans enfreindre les règles,
 il reçoit un compte financé (simulé) sur lequel il touche une part des profits (payouts).
-Différenciateur principal : le **[NOM] Pass**, un système de progression type battle pass (XP, rangs, saisons, missions, récompenses).
+Différenciateur principal : le **Aurum Pass**, un système de progression type battle pass (XP, rangs, saisons, missions, récompenses).
 
 Langues : français + anglais (i18n dès le départ). Devise d'affichage : USD.
 
@@ -65,11 +65,11 @@ Contraste texte ≥ 4.5:1, focus visibles (anneau cyan), vrais `<button>`/`<a>`,
 
 ### 3.5 Référence de page d'accueil (structure validée)
 1. Bandeau promo (code de réduction)
-2. Header : logo + liens (Challenges, Règles, [NOM] Pass, Payouts, FAQ) + Connexion + bouton chrome « Commencer »
+2. Header : logo + liens (Challenges, Règles, Aurum Pass, Payouts, FAQ) + Connexion + bouton chrome « Commencer »
 3. Hero : badge « PROP FIRM FUTURES · MARCHÉS CME », grand titre chrome, sous-titre, 2 CTA, 3 chiffres clés ; à droite, 2 cartes de compte inclinées (métal 150K « Évaluation » + noire/cyan 50K « Financé »)
 4. Bandeau des contrats tradables : ES, NQ, YM, RTY, CL, GC, MES, MNQ
 5. Grille des challenges (4 cartes, la 50K mise en avant « Recommandé »)
-6. Section [NOM] Pass : carte du rang actuel avec barre d'XP, piste des 5 rangs, sources d'XP
+6. Section Aurum Pass : carte du rang actuel avec barre d'XP, piste des 5 rangs, sources d'XP
 7. « Financé en 3 étapes »
 8. Footer + mention légale « comptes simulés »
 
@@ -109,7 +109,7 @@ Comptes financés / payouts :
 
 Codes promo : pourcentage ou montant fixe, date d'expiration, limite d'utilisations, restriction par plan.
 
-## 6. Le [NOM] Pass (battle pass) – cœur de la rétention
+## 6. Le Aurum Pass (battle pass) – cœur de la rétention
 ### Rangs (permanents, basés sur l'XP totale)
 | Rang | XP requise | Récompenses |
 |---|---|---|
@@ -152,7 +152,7 @@ missions du jour/de la semaine, bouton « Réclamer » avec animation, compte à
 
 ## 7. Fonctionnalités par espace
 ### Site public
-Accueil, Challenges (comparateur), Règles détaillées, [NOM] Pass, Payouts (preuves de paiement : à alimenter avec de vraies données uniquement),
+Accueil, Challenges (comparateur), Règles détaillées, Aurum Pass, Payouts (preuves de paiement : à alimenter avec de vraies données uniquement),
 FAQ, Affiliation, Blog (MDX), CGV / Confidentialité / Mentions légales / Avertissement sur les risques.
 
 ### Espace trader (dashboard)
@@ -210,7 +210,7 @@ src/
 - Mets à jour la section « Avancement » en bas de ce fichier après chaque phase.
 
 ## 12. Juridique (à afficher sur le site)
-« Tous les comptes fournis sont des comptes de trading simulés. [NOM] n'est pas un courtier et ne reçoit aucun dépôt de clients.
+« Tous les comptes fournis sont des comptes de trading simulés. Aurum Funded n'est pas un courtier et ne reçoit aucun dépôt de clients.
 Les performances passées ne préjugent pas des performances futures. » Textes définitifs à faire valider par un avocat.
 
 ## Avancement
