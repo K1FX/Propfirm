@@ -189,5 +189,156 @@
   "NotFound": {
     "title": "Page not found",
     "back": "Back to home"
+  },
+  "Dashboard": {
+    "demoBanner": "Demo mode: simulated accounts and trades. Login and your real accounts are coming in a later phase.",
+    "nav": {
+      "label": "Trader area",
+      "overview": "Overview",
+      "accounts": "My accounts",
+      "pass": "{passName}",
+      "payouts": "Payouts",
+      "referrals": "Referrals",
+      "profile": "Profile",
+      "backToSite": "Back to site",
+      "newChallenge": "New challenge"
+    },
+    "overview": {
+      "greeting": "Hello, {name}",
+      "subtitle": "Here is the state of your accounts as of {date}.",
+      "activeAccounts": "Active accounts",
+      "fundedProfit": "Profit on funded accounts",
+      "payoutAvailable": "Available payout",
+      "rank": "Rank",
+      "alerts": "Alerts",
+      "noAlerts": "No alerts: all your rules are in the green.",
+      "myAccounts": "My accounts",
+      "viewAll": "View all"
+    },
+    "status": {
+      "evaluation": "Evaluation",
+      "passed": "Passed",
+      "funded": "Funded",
+      "failed": "Failed",
+      "breached": "Breached"
+    },
+    "account": {
+      "balance": "Balance",
+      "profit": "Total P&L",
+      "target": "Profit target",
+      "drawdown": "Drawdown remaining",
+      "threshold": "Liquidation threshold",
+      "locked": "Locked at {amount}",
+      "trailing": "EOD trailing",
+      "tradingDays": "Trading days",
+      "details": "View account",
+      "purchased": "Purchased on {date}",
+      "equity": "Balance history (close)",
+      "chartBalance": "Balance",
+      "chartThreshold": "Threshold",
+      "chartTarget": "Target",
+      "rules": "Account rules",
+      "trades": "Trade history",
+      "noTrades": "No trades yet.",
+      "back": "My accounts",
+      "minDays": "Minimum trading days",
+      "minDaysValue": "{count} / {min}",
+      "consistency": "Consistency rule",
+      "consistencyValue": "Best day: {pct}% of profit (max {max}%)",
+      "consistencyNA": "Applies once profit is positive",
+      "contracts": "Max contracts",
+      "contractsValue": "{mini} mini / {micro} micro",
+      "winningDays": "Winning days (≥ {min})",
+      "winningDaysValue": "{count} / {required}",
+      "breached": "Account breached on {date}: {reason}.",
+      "passed": "Target reached: your evaluation is passed. Your funded account will be activated for free.",
+      "fundedNote": "Funded account: no target, the drawdown stays active. Payouts are based on profit above the starting balance.",
+      "ok": "Met",
+      "pending": "In progress",
+      "ko": "Not met",
+      "warning": "Warning",
+      "noTarget": "No target"
+    },
+    "table": {
+      "date": "Date",
+      "symbol": "Contract",
+      "side": "Side",
+      "qty": "Qty",
+      "entry": "Entry",
+      "exit": "Exit",
+      "pnl": "Net P&L",
+      "long": "Long",
+      "short": "Short",
+      "caption": "Closed trades, most recent first"
+    },
+    "alerts": {
+      "drawdown": "{account}: {pct}% of drawdown used.",
+      "dailyLoss": "{account}: {pct}% of the daily loss limit reached.",
+      "consistency": "{account}: your best day is approaching the consistency limit."
+    },
+    "violations": {
+      "drawdown": "maximum drawdown reached",
+      "dailyLoss": "daily loss limit reached",
+      "maxContracts": "contract limit exceeded"
+    },
+    "payouts": {
+      "title": "Payouts",
+      "subtitle": "Request your share of the profits on your funded accounts.",
+      "available": "Your available share",
+      "gross": "Gross profit",
+      "split": "100% up to {threshold}, then {pct}%",
+      "winningDays": "Winning days",
+      "eligible": "Eligible",
+      "notEligible": "Not eligible yet",
+      "request": "Request a payout",
+      "requestSoon": "Payout requests open with identity verification (KYC).",
+      "frequency": "Every 2 weeks · weekly from Gold rank",
+      "min": "Minimum: {amount}",
+      "history": "Payout history",
+      "noHistory": "No payouts yet.",
+      "noFunded": "You don't have a funded account yet. Pass an evaluation to unlock payouts."
+    },
+    "pass": {
+      "subtitle": "Earn XP through discipline, rank up and claim your rewards.",
+      "season": "Season {n}",
+      "endsOn": "Season ends on {date}",
+      "seasonXp": "Season XP",
+      "tier": "Tier {n}",
+      "track": "Season track",
+      "free": "Free",
+      "premium": "Premium",
+      "claim": "Claim",
+      "claimed": "Claimed",
+      "locked": "Locked",
+      "premiumLocked": "Premium required",
+      "unlockPremium": "Unlock Premium · {price}",
+      "missions": "Missions",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "completed": "Completed",
+      "leaderboard": "Season leaderboard",
+      "you": "you",
+      "streak": "Current streak: {n} disciplined days",
+      "demoNote": "Demo data: fictional usernames and progress.",
+      "missionsList": {
+        "respectStop": "Respect your stop for 3 days",
+        "positiveDay": "Close a day in profit",
+        "halfMaxLoss": "Trade 3 sessions without exceeding 50% of your max loss",
+        "noViolation": "One session with zero rule violations",
+        "threeSessions": "Trade 3 disciplined sessions this week"
+      },
+      "rewards": {
+        "coupon": "{pct}% off a challenge",
+        "reset": "Free reset",
+        "badge": "Season badge",
+        "frame": "Profile frame",
+        "dailyPayout": "Daily payout add-on",
+        "goodies": "Goodies pack"
+      }
+    },
+    "comingSoon": {
+      "title": "Coming soon",
+      "desc": "This section is coming in a later phase."
+    }
   }
 }

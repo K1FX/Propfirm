@@ -14,6 +14,10 @@ import { cn } from "@/lib/utils";
 import { LocaleSwitcher } from "./locale-switcher";
 import { mainNav } from "./nav-items";
 
+// TODO Phase 3 : remettre "/login" quand l'authentification sera en place.
+// En attendant, « Connexion » ouvre l'espace trader de démonstration.
+const LOGIN_HREF = "/dashboard";
+
 export function SiteHeader() {
   const t = useTranslations("Nav");
   const pathname = usePathname();
@@ -73,7 +77,7 @@ export function SiteHeader() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <LocaleSwitcher />
-            <ButtonLink href="/login" variant="ghost" size="sm">
+            <ButtonLink href={LOGIN_HREF} variant="ghost" size="sm">
               {t("login")}
             </ButtonLink>
             <ButtonLink href="/challenges" size="sm">
@@ -124,7 +128,7 @@ export function SiteHeader() {
               <ButtonLink href="/challenges" size="lg">
                 {t("start")}
               </ButtonLink>
-              <ButtonLink href="/login" variant="secondary" size="lg">
+              <ButtonLink href={LOGIN_HREF} variant="secondary" size="lg">
                 {t("login")}
               </ButtonLink>
               <LocaleSwitcher className="mt-2 self-start" />

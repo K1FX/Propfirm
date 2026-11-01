@@ -189,5 +189,156 @@
   "NotFound": {
     "title": "Page introuvable",
     "back": "Retour à l'accueil"
+  },
+  "Dashboard": {
+    "demoBanner": "Mode démonstration : comptes et trades simulés. La connexion et vos vrais comptes arrivent dans une prochaine phase.",
+    "nav": {
+      "label": "Espace trader",
+      "overview": "Vue d'ensemble",
+      "accounts": "Mes comptes",
+      "pass": "{passName}",
+      "payouts": "Payouts",
+      "referrals": "Parrainage",
+      "profile": "Profil",
+      "backToSite": "Retour au site",
+      "newChallenge": "Nouveau challenge"
+    },
+    "overview": {
+      "greeting": "Bonjour, {name}",
+      "subtitle": "Voici l'état de vos comptes au {date}.",
+      "activeAccounts": "Comptes actifs",
+      "fundedProfit": "Profit sur comptes financés",
+      "payoutAvailable": "Payout disponible",
+      "rank": "Rang",
+      "alerts": "Alertes",
+      "noAlerts": "Aucune alerte : toutes vos règles sont dans le vert.",
+      "myAccounts": "Mes comptes",
+      "viewAll": "Tout voir"
+    },
+    "status": {
+      "evaluation": "Évaluation",
+      "passed": "Réussi",
+      "funded": "Financé",
+      "failed": "Échoué",
+      "breached": "Éliminé"
+    },
+    "account": {
+      "balance": "Solde",
+      "profit": "P&L total",
+      "target": "Objectif de profit",
+      "drawdown": "Drawdown restant",
+      "threshold": "Seuil d'élimination",
+      "locked": "Bloqué à {amount}",
+      "trailing": "Trailing EOD",
+      "tradingDays": "Jours de trading",
+      "details": "Voir le compte",
+      "purchased": "Acheté le {date}",
+      "equity": "Évolution du solde (clôture)",
+      "chartBalance": "Solde",
+      "chartThreshold": "Seuil",
+      "chartTarget": "Objectif",
+      "rules": "Règles du compte",
+      "trades": "Historique des trades",
+      "noTrades": "Aucun trade pour l'instant.",
+      "back": "Mes comptes",
+      "minDays": "Jours de trading minimum",
+      "minDaysValue": "{count} / {min}",
+      "consistency": "Règle de consistance",
+      "consistencyValue": "Meilleur jour : {pct} % du profit (max {max} %)",
+      "consistencyNA": "S'applique dès que le profit est positif",
+      "contracts": "Contrats max",
+      "contractsValue": "{mini} mini / {micro} micro",
+      "winningDays": "Jours gagnants (≥ {min})",
+      "winningDaysValue": "{count} / {required}",
+      "breached": "Compte éliminé le {date} : {reason}.",
+      "passed": "Objectif atteint : votre évaluation est validée. Le compte financé sera activé gratuitement.",
+      "fundedNote": "Compte financé : pas d'objectif, le drawdown reste actif. Les payouts sont calculés sur le profit au-dessus du solde initial.",
+      "ok": "Respectée",
+      "pending": "En cours",
+      "ko": "Non respectée",
+      "warning": "Avertissement",
+      "noTarget": "Sans objectif"
+    },
+    "table": {
+      "date": "Date",
+      "symbol": "Contrat",
+      "side": "Sens",
+      "qty": "Qté",
+      "entry": "Entrée",
+      "exit": "Sortie",
+      "pnl": "P&L net",
+      "long": "Achat",
+      "short": "Vente",
+      "caption": "Trades fermés, du plus récent au plus ancien"
+    },
+    "alerts": {
+      "drawdown": "{account} : {pct} % du drawdown consommé.",
+      "dailyLoss": "{account} : {pct} % de la perte journalière max atteinte.",
+      "consistency": "{account} : votre meilleur jour approche de la limite de consistance."
+    },
+    "violations": {
+      "drawdown": "drawdown maximum atteint",
+      "dailyLoss": "perte journalière maximum atteinte",
+      "maxContracts": "nombre de contrats dépassé"
+    },
+    "payouts": {
+      "title": "Payouts",
+      "subtitle": "Demandez le versement de votre part des profits sur vos comptes financés.",
+      "available": "Votre part disponible",
+      "gross": "Profit brut",
+      "split": "100 % jusqu'à {threshold}, puis {pct} %",
+      "winningDays": "Jours gagnants",
+      "eligible": "Éligible",
+      "notEligible": "Pas encore éligible",
+      "request": "Demander un payout",
+      "requestSoon": "Les demandes de payout ouvrent avec la vérification d'identité (KYC).",
+      "frequency": "Toutes les 2 semaines · hebdomadaire dès le rang Gold",
+      "min": "Minimum : {amount}",
+      "history": "Historique des payouts",
+      "noHistory": "Aucun payout pour l'instant.",
+      "noFunded": "Vous n'avez pas encore de compte financé. Validez une évaluation pour débloquer les payouts."
+    },
+    "pass": {
+      "subtitle": "Gagnez de l'XP grâce à votre discipline, montez en rang et réclamez vos récompenses.",
+      "season": "Saison {n}",
+      "endsOn": "Fin de saison le {date}",
+      "seasonXp": "XP de saison",
+      "tier": "Palier {n}",
+      "track": "Piste de saison",
+      "free": "Gratuit",
+      "premium": "Premium",
+      "claim": "Réclamer",
+      "claimed": "Réclamé",
+      "locked": "Verrouillé",
+      "premiumLocked": "Premium requis",
+      "unlockPremium": "Débloquer le Premium · {price}",
+      "missions": "Missions",
+      "daily": "Quotidiennes",
+      "weekly": "Hebdomadaires",
+      "completed": "Terminée",
+      "leaderboard": "Classement de saison",
+      "you": "vous",
+      "streak": "Série en cours : {n} jours disciplinés",
+      "demoNote": "Données de démonstration : pseudonymes et progression fictifs.",
+      "missionsList": {
+        "respectStop": "Respecte ton stop sur 3 jours",
+        "positiveDay": "Termine un jour en positif",
+        "halfMaxLoss": "Trade 3 sessions sans dépasser 50 % de ta perte max",
+        "noViolation": "Une session sans aucune violation de règle",
+        "threeSessions": "Trade 3 sessions disciplinées cette semaine"
+      },
+      "rewards": {
+        "coupon": "-{pct} % challenge",
+        "reset": "Reset gratuit",
+        "badge": "Badge de saison",
+        "frame": "Cadre de profil",
+        "dailyPayout": "Add-on payout quotidien",
+        "goodies": "Pack goodies"
+      }
+    },
+    "comingSoon": {
+      "title": "Bientôt disponible",
+      "desc": "Cette section arrive dans une prochaine phase."
+    }
   }
 }

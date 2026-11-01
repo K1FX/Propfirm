@@ -10,10 +10,9 @@ import {
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
+import { RankCard, rankText } from "@/components/pass/rank-card";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ProgressBar } from "@/components/ui/progress-bar";
 import { Reveal } from "@/components/ui/reveal";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { brand } from "@/config/brand";
@@ -29,14 +28,6 @@ const sourceIcons: Record<XpSourceId, typeof Target> = {
   referral: Users,
   streak: Flame,
 };
-
-const rankText = {
-  bronze: "text-rank-bronze",
-  silver: "text-rank-silver",
-  gold: "text-rank-gold",
-  platinum: "text-rank-platinum",
-  elite: "text-rank-elite",
-} as const;
 
 /** XP d'exemple pour illustrer la carte de rang (pas un vrai utilisateur). */
 const EXAMPLE_XP = 2_640;
@@ -61,40 +52,11 @@ export function PassSection() {
 
       <div className="relative mt-14 grid gap-6 lg:grid-cols-[1fr_1.2fr]">
         <Reveal>
-          <Card className="flex h-full flex-col gap-6 p-7 border-chrome">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-text-muted">{t("currentRank")}</span>
-              <Badge variant="neutral">{t("example")}</Badge>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="flex size-16 items-center justify-center rounded-2xl border border-rank-gold/50 bg-rank-gold/10 shadow-[0_0_30px_rgba(232,176,74,.25)]">
-                <Trophy className="size-8 text-rank-gold" strokeWidth={1.5} aria-hidden />
-              </div>
-              <div>
-                <p className={cn("font-display text-3xl font-bold", rankText[progress.current.id])}>
-                  {t(`ranks.${progress.current.id}.name`)}
-                </p>
-                <p className="tabular text-sm text-text-muted">
-                  {nf.format(progress.xp)} XP · {t("xpLabel")}
-                </p>
-              </div>
-            </div>
-            <ProgressBar
-              value={progress.progressPct}
-              label={
-                progress.next
-                  ? t("toNext", {
-                      xp: nf.format(progress.xpToNext),
-                      rank: t(`ranks.${progress.next.id}.name`),
-                    })
-                  : t("maxRank")
-              }
-              valueLabel={
-                progress.next
-                  ? `${nf.format(progress.xp)} / ${nf.format(progress.next.minXp)}`
-                  : undefined
-              }
-            />
+          <RankCard
+            xp={EXAMPLE_XP}
+            className="h-full p-7"
+            badge={<Badge variant="neutral">{t("example")}</Badge>}
+          >
             <p className="text-sm text-text-muted">{t("season")}</p>
 
             <h3 className="mt-2 text-sm font-semibold tracking-[0.15em] text-text uppercase">
@@ -119,7 +81,7 @@ export function PassSection() {
                 );
               })}
             </ul>
-          </Card>
+          </RankCard>
         </Reveal>
 
         <Reveal delay={0.1}>

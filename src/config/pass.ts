@@ -60,3 +60,33 @@ export function getRankProgress(totalXp: number) {
     : 100;
   return { current, next, xp, progressPct, xpToNext: next ? next.minXp - xp : 0 };
 }
+
+export type SeasonReward =
+  | { type: "coupon"; pct: number }
+  | { type: "reset" }
+  | { type: "badge" }
+  | { type: "frame" }
+  | { type: "dailyPayout" }
+  | { type: "goodies" };
+
+export type SeasonTier = { tier: number; free: SeasonReward | null; premium: SeasonReward };
+
+/** Modèle de piste de saison (30 paliers) – modifiable depuis l'admin en Phase 8. */
+export function defaultSeasonTrack(): SeasonTier[] {
+  return Array.from({ length: seasonConfig.tiers }, (_, i) => {
+    const tier = i + 1;
+    let free: SeasonReward | null = null;
+    if (tier % 10 === 0) free = { type: "reset" };
+    else if (tier % 5 === 0) free = { type: "coupon", pct: 10 };
+    else if (tier % 3 === 0) free = { type: "badge" };
+
+    let premium: SeasonReward;
+    if (tier === seasonConfig.tiers) premium = { type: "goodies" };
+    else if (tier % 10 === 0) premium = { type: "dailyPayout" };
+    else if (tier % 5 === 0) premium = { type: "reset" };
+    else if (tier % 2 === 0) premium = { type: "coupon", pct: 15 };
+    else premium = { type: "frame" };
+
+    return { tier, free, premium };
+  });
+}
