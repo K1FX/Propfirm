@@ -23,7 +23,7 @@ test.describe("navigateur anglophone", () => {
 test("la version anglaise est servie sur /en", async ({ page }) => {
   await page.goto("/en");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Trade futures");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Get funded");
 });
 
 test("les espaces trader et admin répondent", async ({ page }) => {

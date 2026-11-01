@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-
+import { useInViewOnce } from "@/lib/use-in-view";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -29,11 +28,11 @@ export function ProgressBar({
   showLabel = true,
   className,
 }: Props) {
-  const reduce = useReducedMotion();
+  const { ref, inView } = useInViewOnce<HTMLDivElement>("0px");
   const pct = Math.max(0, Math.min(100, value));
 
   return (
-    <div className={cn("w-full", className)}>
+    <div ref={ref} className={cn("w-full", className)}>
       {showLabel && (
         <div className="mb-2 flex items-baseline justify-between gap-3 text-sm">
           <span className="text-text-muted">{label}</span>
@@ -48,13 +47,12 @@ export function ProgressBar({
         aria-valuenow={Math.round(pct)}
         className="h-2 w-full overflow-hidden rounded-full bg-bg-elevated ring-1 ring-border"
       >
-        <motion.div
-          className={cn("h-full rounded-full", toneClass[tone])}
-          initial={reduce ? false : { width: 0 }}
-          whileInView={{ width: `${pct}%` }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          style={reduce ? { width: `${pct}%` } : undefined}
+        <div
+          className={cn(
+            "h-full origin-left rounded-full transition-transform duration-[1100ms] ease-[cubic-bezier(.22,1,.36,1)]",
+            toneClass[tone],
+          )}
+          style={{ width: `${pct}%`, transform: `scaleX(${inView ? 1 : 0})` }}
         />
       </div>
     </div>

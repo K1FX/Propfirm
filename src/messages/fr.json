@@ -14,12 +14,22 @@
     "closeMenu": "Fermer le menu",
     "main": "Navigation principale",
     "dashboard": "Espace trader",
-    "leaderboard": "Classement"
+    "leaderboard": "Classement",
+    "getFunded": "Être financé"
   },
   "Promo": {
-    "text": "-{discount} % sur toutes les évaluations avec le code",
+    "text": "-{discount} % sur toutes les évaluations",
+    "use": "avec le code",
     "copy": "Copier le code",
-    "copied": "Copié"
+    "copied": "Copié",
+    "endsIn": "Fin dans",
+    "close": "Masquer l'offre",
+    "units": {
+      "d": "j",
+      "h": "h",
+      "m": "min",
+      "s": "s"
+    }
   },
   "LocaleSwitcher": {
     "label": "Langue",
@@ -28,16 +38,24 @@
   },
   "Hero": {
     "badge": "Prop firm futures · Marchés CME",
-    "title": "Tradez les futures. Gardez jusqu'à 100 % des profits.",
-    "subtitle": "Une seule étape d'évaluation, sans limite de temps, avec un drawdown calculé en fin de journée. Progressez avec le {passName} et débloquez de meilleures conditions.",
-    "ctaPrimary": "Choisir mon challenge",
-    "ctaSecondary": "Découvrir le {passName}",
-    "stats": {
-      "split": "de split max.",
-      "splitValue": "{pct} %",
-      "activation": "frais d'activation",
-      "steps": "étape d'évaluation"
+    "titles": {
+      "fundedUpTo": {
+        "line1": "Financé jusqu'à <hl>{size}</hl>.",
+        "line2": "Gardez <hl>{split} %</hl> de chaque gain."
+      },
+      "levelUp": {
+        "line1": "La prop firm futures",
+        "line2": "qui vous paie pour <hl>progresser</hl>."
+      },
+      "fastTrack": {
+        "line1": "Validez en <hl>{days} jours</hl> minimum.",
+        "line2": "Soyez financé. Soyez payé."
+      }
     },
+    "subtitle": "Évaluation en une étape. Aucun frais d'activation. La seule prop firm futures qui récompense votre discipline avec de l'XP, des rangs et de vrais avantages.",
+    "ctaPrimary": "Commencer à trader",
+    "ctaHint": "Choisissez votre plan en 30 secondes",
+    "ctaDiscord": "Rejoindre le Discord",
     "cardEval": "Évaluation",
     "cardFunded": "Financé",
     "cardFooter": "Compte simulé"
@@ -116,25 +134,6 @@
       "referral": "Parrainage d'un trader qui achète",
       "streak": "Série de 5 jours disciplinés"
     }
-  },
-  "Steps": {
-    "eyebrow": "Comment ça marche",
-    "title": "Financé en 3 étapes",
-    "items": {
-      "one": {
-        "title": "Choisissez votre challenge",
-        "desc": "De 25K à 150K. Paiement unique, accès immédiat à votre compte d'évaluation simulé."
-      },
-      "two": {
-        "title": "Atteignez l'objectif",
-        "desc": "Respectez le drawdown et la règle de consistance, en 2 jours de trading minimum. Sans limite de temps."
-      },
-      "three": {
-        "title": "Encaissez vos payouts",
-        "desc": "Activation gratuite du compte financé. Jusqu'à 100 % sur les premiers {threshold}, puis {split} %."
-      }
-    },
-    "cta": "Commencer maintenant"
   },
   "Footer": {
     "tagline": "Prop firm spécialisée dans les futures CME.",
@@ -425,5 +424,137 @@
     },
     "vsLeader": "{pct} % du leader",
     "leader": "Leader"
+  },
+  "Trust": {
+    "label": "Chiffres clés",
+    "maxSize": "Taille de compte max",
+    "split": "Profit split",
+    "activation": "Frais d'activation",
+    "payoutTarget": "Délai cible de payout",
+    "totalPaidOut": "Total versé",
+    "tradersPaid": "Traders payés",
+    "avgPayout": "Délai moyen de payout"
+  },
+  "StickyCta": {
+    "label": "Être financé · -{discount} %",
+    "labelNoPromo": "Être financé"
+  },
+  "HowItWorks": {
+    "eyebrow": "Comment ça marche",
+    "title": "Votre premier payout en <hl>{days} jours</hl> minimum",
+    "example": "Exemple",
+    "steps": {
+      "one": {
+        "pill": "Aujourd'hui",
+        "title": "1. Choisissez votre compte",
+        "desc": "Choisissez votre plan et démarrez votre évaluation immédiatement. Aucun frais d'activation, aucune limite de temps.",
+        "widget": "Compte prêt"
+      },
+      "two": {
+        "pill": "{min} jours et +",
+        "title": "2. Tradez avec notre capital",
+        "desc": "Accédez jusqu'à {size}. Atteignez l'objectif en respectant des règles simples et transparentes.",
+        "widget": "P&L de l'évaluation"
+      },
+      "three": {
+        "pill": "Dès {days} jours",
+        "title": "3. Soyez payé",
+        "desc": "Demandez un payout et gardez jusqu'à 100 % de vos premiers {threshold}, puis {split} %. Payouts hebdomadaires dès le rang Gold.",
+        "widget": "Payouts",
+        "day": "Jour {n}"
+      }
+    }
+  },
+  "Plans": {
+    "tabs": {
+      "label": "Type de compte",
+      "evaluation": "Évaluation",
+      "instantFunding": "Financement immédiat"
+    },
+    "cta": "Commencer à trader",
+    "save": "-{pct} %",
+    "promoApplied": "avec le code {code}",
+    "secure": "Paiement sécurisé",
+    "card": "Carte",
+    "crypto": "Crypto",
+    "accepted": "acceptée",
+    "instant": "Compte livré instantanément"
+  },
+  "WhyUs": {
+    "eyebrow": "Pourquoi Aurum",
+    "title": "Pensé pour les traders disciplinés",
+    "items": {
+      "activation": {
+        "title": "Aucun frais d'activation",
+        "desc": "Validez votre évaluation et votre compte financé est activé pour {fee}. Aucun coût caché."
+      },
+      "eod": {
+        "title": "Drawdown EOD trailing",
+        "desc": "Votre drawdown n'est mis à jour qu'à la clôture du jour de trading, pas tick par tick, et se bloque au solde initial + {lock}."
+      },
+      "payouts": {
+        "title": "Payouts réguliers",
+        "desc": "Un payout tous les {days} jours après {winning} jours gagnants. Payouts hebdomadaires dès le rang Gold."
+      },
+      "pass": {
+        "title": "Progressez avec le Pass",
+        "desc": "Gagnez de l'XP pour votre discipline, montez 5 rangs et débloquez réductions, payouts plus rapides et meilleur split."
+      }
+    }
+  },
+  "Support": {
+    "eyebrow": "Support",
+    "title1": "Un vrai support humain,",
+    "title2": "dans votre langue.",
+    "desc": "Parlez à de vrais traders sur Discord. Pas de bots, pas de scripts.",
+    "hours": "Horaires : {hours}",
+    "getHelp": "Obtenir de l'aide",
+    "discord": "Rejoindre le Discord",
+    "mapLabel": "Localisation de l'équipe support"
+  },
+  "Faq": {
+    "eyebrow": "FAQ",
+    "title": "Vos questions, nos réponses",
+    "more": "Voir toutes les règles",
+    "items": {
+      "evaluation": {
+        "q": "Comment fonctionne l'évaluation ?",
+        "a": "C'est une seule étape, sans limite de temps. Atteignez l'objectif de profit sans toucher le drawdown, tradez au moins {minDays} jours, et votre meilleur jour ne doit pas dépasser {consistency} % du profit total."
+      },
+      "drawdown": {
+        "q": "Qu'est-ce qu'un drawdown EOD trailing ?",
+        "a": "Votre seuil d'élimination suit votre plus haut solde de clôture, pas vos pics intraday. Il cesse de monter une fois arrivé au solde initial + {lock}."
+      },
+      "payouts": {
+        "q": "Quand puis-je demander un payout ?",
+        "a": "Après {winning} jours gagnants (jours d'au moins {winningMin}) sur un compte financé, avec un minimum de {minPayout}. Un payout tous les {days} jours, chaque semaine dès le rang Gold."
+      },
+      "split": {
+        "q": "Quel profit split ?",
+        "a": "Vous gardez 100 % de vos premiers {threshold} de profit, puis {split} %. Les rangs supérieurs du Pass débloquent un meilleur split."
+      },
+      "real": {
+        "q": "Est-ce que je trade de l'argent réel ?",
+        "a": "Non. Tous les comptes sont des comptes de trading simulés. Aurum Funded n'est pas un courtier et ne reçoit aucun dépôt de clients."
+      },
+      "platforms": {
+        "q": "Quelles plateformes de trading ?",
+        "a": "[À compléter] Notre partenaire de plateforme sera annoncé avant le lancement."
+      },
+      "refund": {
+        "q": "Quelle est votre politique de remboursement ?",
+        "a": "[À compléter] Notre politique de remboursement sera publiée avant le lancement."
+      },
+      "countries": {
+        "q": "Quels pays sont acceptés ?",
+        "a": "[À compléter] La liste des pays acceptés sera publiée avant le lancement."
+      }
+    }
+  },
+  "FinalCta": {
+    "title": "Prêt à être financé ?",
+    "subtitle": "Choisissez votre plan en 30 secondes et commencez à trader aujourd'hui.",
+    "start": "Commencer à trader",
+    "discord": "Rejoindre le Discord"
   }
 }

@@ -29,10 +29,10 @@ Style : **noir profond, effets chrome/argent métallisé, accents cyan**. Premiu
 ### 3.1 Couleurs (à mettre en tokens Tailwind / variables CSS)
 | Token | Hex | Usage |
 |---|---|---|
-| `bg` | `#08090B` | Fond principal |
-| `bg-elevated` | `#0C0E12` | Sections alternées, bandeau promo |
-| `surface` | `#111317` | Cartes |
-| `border` | `#262A31` | Bordures |
+| `bg` | `#030405` | Fond principal (quasi noir, validé) |
+| `bg-elevated` | `#07080A` | Sections alternées, bandeau promo |
+| `surface` | `#0D0F12` | Cartes |
+| `border` | `#1F232A` | Bordures |
 | `text` | `#ECEFF3` | Texte principal |
 | `text-muted` | `#8E95A1` | Texte secondaire (contraste AA validé) |
 | `cyan` | `#22D3EE` | Accent principal (CTA secondaires, badges, barres de progression) |
@@ -219,6 +219,7 @@ Les performances passées ne préjugent pas des performances futures. » Textes 
 - [x] Phase 1 – Design system (`components/ui` : Button/ButtonLink, Card, Badge, ProgressBar, AccountPass (billet), Section, Reveal, Logo), page d'accueil §3.5, `/styleguide`, pages « en construction » via `(marketing)/[slug]`. Config remplie en avance : `plans.ts`, `rules.ts`, `pass.ts` (rangs/XP), `promo.ts` (code PLACEHOLDER).
 - [~] Intérieur (en avance, en mode démo) : moteur de règles `server/rules` (drawdown EOD trailing + lock, consistance, jours min, contrats, perte jour, alertes 80 %) + `lib/session.ts` (jour CME Chicago) + `TradingProvider`/`MockTradingProvider` – tous testés. Dashboard trader : vue d'ensemble, comptes, page compte refaite façon terminal premium (5 indicateurs, courbe avec légende, barre minimum→départ→objectif, calendrier P&L/trades, règles, trades), compte validé = contour lumineux animé + « Passer en Funded », Pass (rang, piste 30 paliers, missions, classement), payouts. Données : `server/demo/data.ts` (DÉMO, à remplacer par la base en Phase 3). « Connexion » pointe vers /dashboard en attendant l'auth.
 - [~] Classement (choix : par profit $ réalisé sur comptes financés) : page publique `/leaderboard` (dans le menu) + `/dashboard/leaderboard` avec position de l'utilisateur épinglée. Podium top 3, filtres période (saison / mois / toujours) et taille de compte. Données : `server/leaderboard/service.ts` (DÉMO, bandeau obligatoire). À faire en Phase 3 : vraies données + option « ne pas apparaître » dans le profil.
+- [x] Refonte landing « conversion » : fond quasi noir ; hero (titre en config `hero.ts` + variantes A/B, chiffres cyan), barre de confiance (`config/trust.ts` : promesses tirées de la config, vraies stats seulement au-delà de seuils), bandeau promo avec compte à rebours masquable (`promo.ts`), bouton fixe mobile, How it works (visuels en code), plans avec onglets/prix barré/moyens de paiement (`payments.ts`), Pourquoi nous, Pass, Support (`support.ts`, carte en points), avis (masqué sans vraies données), FAQ, CTA final. `track()` dans `lib/analytics.ts` (dataLayer). Langue par défaut : FR pendant la construction (passer `defaultLocale` à "en" au lancement). Lighthouse mobile ≈ 86–91 (a11y/SEO/bonnes pratiques 100).
 - [ ] Phase 2 – Pages publiques
 
 Notes techniques :
@@ -229,4 +230,7 @@ Notes techniques :
 - Cache Components : `dynamicParams` est interdit ; un paramètre non listé dans `generateStaticParams` peut répondre 200 à la 1re visite avant d'afficher la 404 (`notFound()`). Tester le contenu, pas le statut.
 - `tailwind-merge` (cn) supprime les classes inconnues qui ressemblent à `border-*`/`ring-*` : nommer les utilitaires maison autrement (ex. `animated-glow`).
 - Grilles : ajouter `min-w-0` aux enfants d'une grille qui contient un élément large (tableau, calendrier), sinon débordement horizontal sur mobile. Un test e2e vérifie l'absence de débordement.
+- Performance landing : pas de framer-motion sur le site public (animations en CSS : `.reveal`, `animate-float`, `useInViewOnce`). Ne jamais animer un texte du hero en changeant son contenu (pénalise le LCP) : animer via `transform`.
+- next-intl : ne pas envoyer tout le dictionnaire au client ; utiliser `pickClientMessages()` (`src/i18n/client-messages.ts`) et ajouter le namespace d'un nouveau composant client au bon groupe.
+- À REMPLIR avant lancement : `brand.discordUrl`, `promo` (vrai code + date), `trust.payoutProcessingHours`, `support` (langues/horaires), FAQ plateformes/remboursement/pays.
 - Langue : utiliser `toLocale()` (`src/i18n/routing.ts`) pour valider le paramètre `[locale]`.

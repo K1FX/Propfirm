@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 
 import { LeaderboardDemoNote } from "@/components/leaderboard/demo-note";
 import { LeaderboardView } from "@/components/leaderboard/leaderboard-view";
 import { Section, SectionHeading } from "@/components/ui/section";
+import { pickClientMessages } from "@/i18n/client-messages";
 import { toLocale } from "@/i18n/routing";
 import { getLeaderboard } from "@/server/leaderboard/service";
 
@@ -19,6 +21,7 @@ export default async function LeaderboardPage({ params }: PageProps<"/[locale]/l
   const t = await getTranslations("Leaderboard");
   // Page publique : on n'expose pas l'utilisateur de démo.
   const entries = getLeaderboard().filter((e) => !e.me);
+  const messages = await pickClientMessages("leaderboard");
 
   return (
     <Section className="overflow-hidden">
@@ -34,7 +37,9 @@ export default async function LeaderboardPage({ params }: PageProps<"/[locale]/l
           subtitle={t("subtitle")}
         />
         <LeaderboardDemoNote />
-        <LeaderboardView entries={entries} locale={locale} />
+        <NextIntlClientProvider messages={messages}>
+          <LeaderboardView entries={entries} locale={locale} />
+        </NextIntlClientProvider>
       </div>
     </Section>
   );

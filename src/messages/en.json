@@ -14,12 +14,22 @@
     "closeMenu": "Close menu",
     "main": "Main navigation",
     "dashboard": "Trader area",
-    "leaderboard": "Leaderboard"
+    "leaderboard": "Leaderboard",
+    "getFunded": "Get funded"
   },
   "Promo": {
-    "text": "{discount}% off every evaluation with code",
+    "text": "{discount}% off every evaluation",
+    "use": "use code",
     "copy": "Copy code",
-    "copied": "Copied"
+    "copied": "Copied",
+    "endsIn": "Ends in",
+    "close": "Hide the offer",
+    "units": {
+      "d": "d",
+      "h": "h",
+      "m": "m",
+      "s": "s"
+    }
   },
   "LocaleSwitcher": {
     "label": "Language",
@@ -28,16 +38,24 @@
   },
   "Hero": {
     "badge": "Futures prop firm · CME markets",
-    "title": "Trade futures. Keep up to 100% of the profits.",
-    "subtitle": "One evaluation step, no time limit, end-of-day drawdown. Level up with the {passName} and unlock better conditions.",
-    "ctaPrimary": "Choose my challenge",
-    "ctaSecondary": "Discover the {passName}",
-    "stats": {
-      "split": "max profit split",
-      "splitValue": "{pct}%",
-      "activation": "activation fee",
-      "steps": "evaluation step"
+    "titles": {
+      "fundedUpTo": {
+        "line1": "Get funded up to <hl>{size}</hl>.",
+        "line2": "Keep <hl>{split}%</hl> of every win."
+      },
+      "levelUp": {
+        "line1": "The futures prop firm",
+        "line2": "that pays you to <hl>level up</hl>."
+      },
+      "fastTrack": {
+        "line1": "Pass in as little as <hl>{days} days</hl>.",
+        "line2": "Get funded. Get paid."
+      }
     },
+    "subtitle": "One-step evaluation. No activation fee. The only futures prop firm that rewards your discipline with XP, ranks and real perks.",
+    "ctaPrimary": "Start Trading Now",
+    "ctaHint": "Pick your plan in 30 seconds",
+    "ctaDiscord": "Join the Discord",
     "cardEval": "Evaluation",
     "cardFunded": "Funded",
     "cardFooter": "Simulated account"
@@ -116,25 +134,6 @@
       "referral": "Referral of a paying trader",
       "streak": "5-day discipline streak"
     }
-  },
-  "Steps": {
-    "eyebrow": "How it works",
-    "title": "Funded in 3 steps",
-    "items": {
-      "one": {
-        "title": "Pick your challenge",
-        "desc": "From 25K to 150K. One-time payment, instant access to your simulated evaluation account."
-      },
-      "two": {
-        "title": "Hit the target",
-        "desc": "Respect the drawdown and the consistency rule, over at least 2 trading days. No time limit."
-      },
-      "three": {
-        "title": "Get paid",
-        "desc": "Free funded account activation. Up to 100% on the first {threshold}, then {split}%."
-      }
-    },
-    "cta": "Get started now"
   },
   "Footer": {
     "tagline": "Futures prop firm for CME markets.",
@@ -425,5 +424,137 @@
     },
     "vsLeader": "{pct}% of leader",
     "leader": "Leader"
+  },
+  "Trust": {
+    "label": "Key figures",
+    "maxSize": "Max account size",
+    "split": "Profit split",
+    "activation": "Activation fee",
+    "payoutTarget": "Payout processing target",
+    "totalPaidOut": "Total paid out",
+    "tradersPaid": "Traders paid",
+    "avgPayout": "Avg. payout time"
+  },
+  "StickyCta": {
+    "label": "Get funded – {discount}% OFF",
+    "labelNoPromo": "Get funded"
+  },
+  "HowItWorks": {
+    "eyebrow": "How it works",
+    "title": "Get your first payout in as little as <hl>{days} days</hl>",
+    "example": "Example",
+    "steps": {
+      "one": {
+        "pill": "Today",
+        "title": "1. Choose your account",
+        "desc": "Pick your plan and start your evaluation instantly. No activation fee, no time limit.",
+        "widget": "Account ready"
+      },
+      "two": {
+        "pill": "Next {min}+ days",
+        "title": "2. Trade with our capital",
+        "desc": "Access up to {size}. Hit your profit target while respecting simple, transparent rules.",
+        "widget": "Evaluation P&L"
+      },
+      "three": {
+        "pill": "In as little as {days} days",
+        "title": "3. Get paid",
+        "desc": "Request a payout and keep up to 100% of your first {threshold}, then {split}%. Weekly payouts from Gold rank.",
+        "widget": "Payouts",
+        "day": "Day {n}"
+      }
+    }
+  },
+  "Plans": {
+    "tabs": {
+      "label": "Account type",
+      "evaluation": "Evaluation",
+      "instantFunding": "Instant Funding"
+    },
+    "cta": "Start Trading Now",
+    "save": "Save {pct}%",
+    "promoApplied": "with code {code}",
+    "secure": "Secure checkout",
+    "card": "Card",
+    "crypto": "Crypto",
+    "accepted": "accepted",
+    "instant": "Instant account delivery"
+  },
+  "WhyUs": {
+    "eyebrow": "Why Aurum",
+    "title": "Built for disciplined traders",
+    "items": {
+      "activation": {
+        "title": "No activation fee",
+        "desc": "Pass your evaluation and your funded account is activated for {fee}. No hidden costs."
+      },
+      "eod": {
+        "title": "EOD trailing drawdown",
+        "desc": "Your drawdown is only updated at the end of the trading day, not tick by tick, and locks at your starting balance + {lock}."
+      },
+      "payouts": {
+        "title": "Regular payouts",
+        "desc": "Request a payout every {days} days after {winning} winning days. Weekly payouts from Gold rank."
+      },
+      "pass": {
+        "title": "Level up with the Pass",
+        "desc": "Earn XP for discipline, climb 5 ranks and unlock discounts, faster payouts and a better split."
+      }
+    }
+  },
+  "Support": {
+    "eyebrow": "Support",
+    "title1": "Real human support,",
+    "title2": "in your language.",
+    "desc": "Talk to real traders on Discord. No bots, no scripts.",
+    "hours": "Hours: {hours}",
+    "getHelp": "Get help",
+    "discord": "Join the Discord",
+    "mapLabel": "Support team locations"
+  },
+  "Faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions, answered",
+    "more": "See all the rules",
+    "items": {
+      "evaluation": {
+        "q": "How does the evaluation work?",
+        "a": "It's a single step with no time limit. Reach the profit target without hitting the drawdown, trade at least {minDays} days, and make sure your best day is no more than {consistency}% of your total profit."
+      },
+      "drawdown": {
+        "q": "What is an EOD trailing drawdown?",
+        "a": "Your liquidation level follows your highest end-of-day balance, not your intraday peaks. It stops moving once it reaches your starting balance + {lock}."
+      },
+      "payouts": {
+        "q": "When can I request a payout?",
+        "a": "After {winning} winning days (days of at least {winningMin}) on a funded account, with a minimum of {minPayout}. Payouts are every {days} days, weekly from Gold rank."
+      },
+      "split": {
+        "q": "What profit split do I get?",
+        "a": "You keep 100% of your first {threshold} of profit, then {split}%. Higher Pass ranks unlock a better split."
+      },
+      "real": {
+        "q": "Am I trading real money?",
+        "a": "No. All accounts are simulated trading accounts. Aurum Funded is not a broker and does not accept customer deposits."
+      },
+      "platforms": {
+        "q": "Which trading platforms can I use?",
+        "a": "[To be completed] Our trading platform partner will be announced before launch."
+      },
+      "refund": {
+        "q": "What is your refund policy?",
+        "a": "[To be completed] Our refund policy will be published before launch."
+      },
+      "countries": {
+        "q": "Which countries are accepted?",
+        "a": "[To be completed] The list of accepted countries will be published before launch."
+      }
+    }
+  },
+  "FinalCta": {
+    "title": "Ready to get funded?",
+    "subtitle": "Pick your plan in 30 seconds and start trading today.",
+    "start": "Start Trading Now",
+    "discord": "Join the Discord"
   }
 }

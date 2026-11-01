@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { brand } from "@/config/brand";
+import { pickClientMessages } from "@/i18n/client-messages";
 import { routing, toLocale } from "@/i18n/routing";
 
 import "../globals.css";
@@ -35,6 +36,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const messages = await pickClientMessages("site");
 
   return (
     <html
@@ -42,7 +44,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       className={`${sora.variable} ${manrope.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-dvh bg-bg text-text">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

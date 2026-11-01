@@ -9,6 +9,7 @@ import { Container } from "@/components/ui/section";
 import { Logo } from "@/components/ui/logo";
 import { brand } from "@/config/brand";
 import { Link, usePathname } from "@/i18n/navigation";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 import { LocaleSwitcher } from "./locale-switcher";
@@ -80,8 +81,13 @@ export function SiteHeader() {
             <ButtonLink href={LOGIN_HREF} variant="ghost" size="sm">
               {t("login")}
             </ButtonLink>
-            <ButtonLink href="/challenges" size="sm">
-              {t("start")}
+            <ButtonLink
+              href="/#plans"
+              size="sm"
+              onClick={() => track("header_cta")}
+              className="animate-cta-pulse"
+            >
+              {t("getFunded")}
             </ButtonLink>
           </div>
 
@@ -125,8 +131,8 @@ export function SiteHeader() {
               </ul>
             </nav>
             <div className="mt-6 flex flex-col gap-3">
-              <ButtonLink href="/challenges" size="lg">
-                {t("start")}
+              <ButtonLink href="/#plans" size="lg" onClick={() => track("header_cta")}>
+                {t("getFunded")}
               </ButtonLink>
               <ButtonLink href={LOGIN_HREF} variant="secondary" size="lg">
                 {t("login")}

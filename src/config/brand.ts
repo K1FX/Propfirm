@@ -7,6 +7,8 @@ export const brand = {
   domain: "example.com",
   supportEmail: "support@example.com",
   passName: "Aurum Pass",
+  /** À REMPLIR : lien d'invitation Discord. Vide = boutons Discord masqués. */
+  discordUrl: "",
   social: {
     discord: "",
     x: "",

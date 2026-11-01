@@ -2,15 +2,36 @@ import { expect, test } from "@playwright/test";
 
 test.use({ locale: "fr-FR" });
 
-test("la page d'accueil affiche les sections clés", async ({ page }) => {
+test("landing : hero, barre de confiance et sections clés", async ({ page }) => {
   await page.goto("/fr");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Tradez les futures");
-  for (const size of ["25K", "50K", "100K", "150K"]) {
-    await expect(page.getByRole("link", { name: `Commencer le ${size}` })).toBeVisible();
-  }
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Financé jusqu'à");
+  await expect(page.getByLabel("Chiffres clés")).toContainText("Profit split");
+  await expect(page.getByRole("heading", { name: /Votre premier payout/ })).toBeVisible();
+  await expect(
+    page.locator("#plans").getByRole("link", { name: "Commencer à trader" }),
+  ).toHaveCount(4);
   await expect(page.getByText("Recommandé")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Financé en 3 étapes" })).toBeVisible();
-  await expect(page.getByText(/comptes de trading simulés/).first()).toBeVisible();
+  await expect(page.getByRole("contentinfo").getByText(/comptes de trading simulés/)).toBeVisible();
+});
+
+test("le CTA principal mène à la section des plans", async ({ page }) => {
+  await page.goto("/fr");
+  await page.locator("#hero").getByRole("link", { name: "Commencer à trader" }).click();
+  await expect(page).toHaveURL(/#plans$/);
+  await expect(page.locator("#plans")).toBeInViewport();
+});
+
+test("FAQ en accordéon", async ({ page }) => {
+  await page.goto("/fr");
+  const q = page.getByText("Comment fonctionne l'évaluation ?");
+  await q.click();
+  await expect(page.getByText(/C'est une seule étape, sans limite de temps/)).toBeVisible();
+});
+
+test("le bandeau promo se masque", async ({ page }) => {
+  await page.goto("/fr");
+  await page.getByRole("button", { name: "Masquer l'offre" }).click();
+  await expect(page.getByRole("button", { name: "Masquer l'offre" })).toHaveCount(0);
 });
 
 test("les liens du header ne mènent pas à une 404", async ({ page }) => {
@@ -35,4 +56,18 @@ test("menu mobile", async ({ page, isMobile }) => {
   await page.locator("#mobile-menu").getByRole("link", { name: "FAQ" }).click();
   await expect(page).toHaveURL(/\/fr\/faq$/);
   await expect(page.locator("#mobile-menu")).toBeHidden();
+});
+
+test("bouton fixe mobile : visible après le hero, masqué sur les plans", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "mobile uniquement");
+  await page.goto("/fr");
+  const sticky = page.getByRole("link", { name: /Être financé ·/ });
+  await expect(sticky).toHaveCount(0);
+  await page.locator("#how-it-works").scrollIntoViewIfNeeded();
+  await expect(sticky).toBeVisible();
+  await page.locator("#plans").scrollIntoViewIfNeeded();
+  await expect(sticky).toHaveCount(0);
 });
