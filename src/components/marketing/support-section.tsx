@@ -9,7 +9,7 @@ import { brand } from "@/config/brand";
 import { support } from "@/config/support";
 import { cn } from "@/lib/utils";
 
-import { Flag } from "./flags";
+import { Flag } from "@/components/ui/flag";
 import { WorldMap } from "./world-map";
 
 export function SupportSection() {
@@ -33,6 +33,11 @@ export function SupportSection() {
                 {l.greeting}
               </li>
             ))}
+            {support.showMoreLanguages && (
+              <li className="flex items-center rounded-full border border-cyan/40 bg-cyan/10 px-3 py-1.5 text-sm font-semibold text-cyan-light">
+                {t("more")}
+              </li>
+            )}
           </ul>
           <h2 className="font-display text-3xl font-bold text-balance sm:text-5xl">
             <span className="block text-cyan drop-shadow-[0_0_18px_rgba(34,211,238,.45)]">

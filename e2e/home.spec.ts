@@ -7,9 +7,9 @@ test("landing : hero, barre de confiance et sections clés", async ({ page }) =>
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Financé jusqu'à");
   await expect(page.getByLabel("Chiffres clés")).toContainText("Profit split");
   await expect(page.getByRole("heading", { name: /Votre premier payout/ })).toBeVisible();
-  await expect(
-    page.locator("#plans").getByRole("link", { name: /^Commencer avec/ }),
-  ).toHaveCount(4);
+  await expect(page.locator("#plans").getByRole("link", { name: /^Commencer avec/ })).toHaveCount(
+    4,
+  );
   await expect(page.locator("#plans").getByText("Le plus populaire")).toBeVisible();
   await expect(page.getByRole("contentinfo").getByText(/comptes de trading simulés/)).toBeVisible();
 });

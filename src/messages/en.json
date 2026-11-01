@@ -421,7 +421,8 @@
       "pass": "Pass rank",
       "account": "Account",
       "days": "Days",
-      "profit": "Profit"
+      "profit": "Profit",
+      "country": "Country"
     },
     "change": {
       "up": "Up {n} places",
@@ -439,7 +440,11 @@
       "average": "Average profit"
     },
     "vsLeader": "{pct}% of leader",
-    "leader": "Leader"
+    "leader": "Leader",
+    "countries": {
+      "label": "Country",
+      "all": "All"
+    }
   },
   "Trust": {
     "label": "Key figures",
@@ -583,7 +588,8 @@
     "hours": "Hours: {hours}",
     "getHelp": "Get help",
     "discord": "Join the Discord",
-    "mapLabel": "Support team locations"
+    "mapLabel": "Support team locations",
+    "more": "& more"
   },
   "Faq": {
     "eyebrow": "FAQ",

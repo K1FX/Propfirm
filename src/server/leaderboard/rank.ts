@@ -1,3 +1,4 @@
+import type { CountryCode } from "@/components/ui/flag";
 import type { SizeId as PlanId } from "@/config/sizes";
 import type { RankId } from "@/config/pass";
 import type { Cents } from "@/lib/format";
@@ -11,6 +12,7 @@ export type LeaderboardEntry = {
   handle: string;
   rank: RankId;
   planId: PlanId;
+  country: CountryCode;
   profit: Record<LeaderboardPeriod, Cents>;
   tradingDays: Record<LeaderboardPeriod, number>;
   /** Variation de position depuis la veille (positif = monte). */
@@ -23,8 +25,10 @@ export function rankEntries(
   entries: readonly LeaderboardEntry[],
   period: LeaderboardPeriod,
   planId: PlanId | "all",
+  country: CountryCode | "all" = "all",
 ): LeaderboardEntry[] {
   return entries
     .filter((e) => planId === "all" || e.planId === planId)
+    .filter((e) => country === "all" || e.country === country)
     .sort((a, b) => b.profit[period] - a.profit[period] || a.handle.localeCompare(b.handle));
 }

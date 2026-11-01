@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowDown, ArrowUp, Minus } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, Minus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
+import { Flag, type CountryCode } from "@/components/ui/flag";
 import { ACCOUNT_SIZE, SIZES, type SizeId as PlanId } from "@/config/sizes";
 import { formatAccountSize, formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -88,8 +89,23 @@ export function LeaderboardView({ entries, locale, limit = 25 }: Props) {
   const tPass = useTranslations("Pass.ranks");
   const [period, setPeriod] = useState<LeaderboardPeriod>("season");
   const [size, setSize] = useState<PlanId | "all">("all");
+  const [country, setCountry] = useState<CountryCode | "all">("all");
+  const regionName = useMemo(() => {
+    const dn = new Intl.DisplayNames([locale], { type: "region" });
+    return (c: CountryCode) => dn.of(c.toUpperCase()) ?? c.toUpperCase();
+  }, [locale]);
+  const countries = useMemo(
+    () =>
+      [...new Set(entries.map((e) => e.country))].sort((a, b) =>
+        regionName(a).localeCompare(regionName(b), locale),
+      ),
+    [entries, regionName, locale],
+  );
 
-  const ranked = useMemo(() => rankEntries(entries, period, size), [entries, period, size]);
+  const ranked = useMemo(
+    () => rankEntries(entries, period, size, country),
+    [entries, period, size, country],
+  );
   const rest = ranked.slice(3, limit);
   const myIndex = ranked.findIndex((e) => e.me);
   const me = myIndex >= 0 ? ranked[myIndex] : undefined;
@@ -135,7 +151,15 @@ export function LeaderboardView({ entries, locale, limit = 25 }: Props) {
           <TraderAvatar handle={e.handle} tone={e.rank} size="sm" />
           <div className="min-w-0 flex-1">
             <p className="truncate font-semibold">
+              <Flag
+                code={e.country}
+                title={regionName(e.country)}
+                className="mr-2 inline-block h-[11px] w-[16px] rounded-[2px] align-[-1px] ring-1 ring-white/10"
+              />
               <span className={cn(e.me && "text-cyan-light")}>{e.handle}</span>
+              <span className="ml-2 hidden text-xs font-normal text-text-muted md:inline">
+                {regionName(e.country)}
+              </span>
               {e.me && <span className="ml-1.5 text-xs text-cyan-light">({t("you")})</span>}
             </p>
             {/* Profit relatif au leader */}
@@ -187,6 +211,37 @@ export function LeaderboardView({ entries, locale, limit = 25 }: Props) {
             ...SIZES.map((s) => ({ value: s, label: formatAccountSize(ACCOUNT_SIZE[s]) })),
           ]}
         />
+        <label className="flex flex-col gap-2">
+          <span className="px-1 label-caps">{t("countries.label")}</span>
+          <span className="relative flex items-center">
+            {country !== "all" && (
+              <Flag
+                code={country}
+                className="pointer-events-none absolute left-3 h-[11px] w-[16px] rounded-[2px] ring-1 ring-white/10"
+              />
+            )}
+            <select
+              aria-label={t("countries.label")}
+              value={country}
+              onChange={(ev) => setCountry(ev.target.value as CountryCode | "all")}
+              className={cn(
+                "h-[38px] min-w-44 appearance-none rounded-[12px] border border-border bg-bg/70 pr-9 text-sm font-semibold text-text focus-visible:outline-cyan",
+                country !== "all" ? "pl-9" : "pl-3",
+              )}
+            >
+              <option value="all">{t("countries.all")}</option>
+              {countries.map((c) => (
+                <option key={c} value={c}>
+                  {regionName(c)}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              className="pointer-events-none absolute right-3 size-4 text-text-muted"
+              aria-hidden
+            />
+          </span>
+        </label>
       </div>
 
       {/* Chiffres clés de la sélection */}

@@ -5,6 +5,7 @@ import { Crown } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
+import { Flag } from "@/components/ui/flag";
 import { ACCOUNT_SIZE } from "@/config/sizes";
 import { formatAccountSize, formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -99,6 +100,13 @@ export function Podium({ top, period, locale, animationKey }: Props) {
               )}
               <TraderAvatar handle={e.handle} tone={p.tone} size={first ? "xl" : "lg"} />
               <p className="w-full truncate font-display text-sm font-semibold sm:text-lg">
+                <Flag
+                  code={e.country}
+                  title={new Intl.DisplayNames([locale], { type: "region" }).of(
+                    e.country.toUpperCase(),
+                  )}
+                  className="mr-1.5 inline-block h-[11px] w-[16px] rounded-[2px] ring-1 ring-white/10 sm:h-[13px] sm:w-[19px]"
+                />
                 {e.handle}
                 {e.me && <span className="ml-1 text-xs text-cyan-light">({t("you")})</span>}
               </p>

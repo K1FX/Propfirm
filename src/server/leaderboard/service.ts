@@ -1,3 +1,4 @@
+import type { CountryCode } from "@/components/ui/flag";
 import { ACCOUNT_SIZE, SIZES } from "@/config/plans";
 import { ranks, type RankId } from "@/config/pass";
 
@@ -53,6 +54,38 @@ const HANDLES = [
   "SessionSam",
 ] as const;
 
+/** Pays de démonstration (répartition fictive, pondérée vers les marchés visés). */
+const DEMO_COUNTRIES: readonly CountryCode[] = [
+  "us",
+  "gb",
+  "ca",
+  "fr",
+  "us",
+  "de",
+  "au",
+  "us",
+  "nl",
+  "es",
+  "br",
+  "us",
+  "ch",
+  "it",
+  "us",
+  "ae",
+  "in",
+  "mx",
+  "us",
+  "be",
+  "sg",
+  "pt",
+  "us",
+  "pl",
+  "gb",
+  "ca",
+  "fr",
+  "us",
+];
+
 /** Générateur déterministe (mulberry32). */
 function rng(seed: number) {
   let a = seed >>> 0;
@@ -90,6 +123,7 @@ export function getLeaderboard(): LeaderboardEntry[] {
       handle,
       rank: rankForXp(Math.floor(rand() * 9_500)),
       planId: size,
+      country: DEMO_COUNTRIES[i % DEMO_COUNTRIES.length]!,
       profit: { season, month, allTime },
       tradingDays: {
         season: seasonDays,
@@ -106,6 +140,7 @@ export function getLeaderboard(): LeaderboardEntry[] {
     handle: "Trader démo",
     rank: "gold",
     planId: "50k",
+    country: "fr",
     profit: { season: 364_600, month: 364_600, allTime: 364_600 },
     tradingDays: { season: 9, month: 9, allTime: 9 },
     change: 2,

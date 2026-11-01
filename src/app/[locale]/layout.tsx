@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Manrope, Sora } from "next/font/google";
+import { JetBrains_Mono, Manrope, Michroma, Sora } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -11,6 +11,8 @@ import { routing, toLocale } from "@/i18n/routing";
 import "../globals.css";
 
 const sora = Sora({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-sora" });
+/** Police du nom de marque (logo texte). Pour en changer : remplacer ici (ex. Cinzel, Orbitron). */
+const wordmark = Michroma({ subsets: ["latin"], weight: "400", variable: "--font-wordmark" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -41,7 +43,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   return (
     <html
       lang={locale}
-      className={`${sora.variable} ${manrope.variable} ${jetbrainsMono.variable}`}
+      className={`${sora.variable} ${manrope.variable} ${jetbrainsMono.variable} ${wordmark.variable}`}
     >
       <body className="min-h-dvh bg-bg text-text">
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>

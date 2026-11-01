@@ -60,6 +60,7 @@ Couleurs des rangs du Pass : Bronze `#C98A5A`, Silver `#B8C0CC`, Gold `#E8B04A`,
 - Titres : **Sora** 600/700, letter-spacing -0.02em
 - Texte : **Manrope** 400–700
 - Chiffres, prix, P&L, tickers : **JetBrains Mono** 500/600 (chiffres tabulaires)
+- Nom de marque (logo texte) : **Michroma**, majuscules espacées, 1er mot en chrome (`components/ui/logo.tsx`)
 
 ### 3.4 Accessibilité
 Contraste texte ≥ 4.5:1, focus visibles (anneau cyan), vrais `<button>`/`<a>`, labels sur tous les inputs, site 100 % responsive (mobile d'abord pour le dashboard).

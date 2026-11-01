@@ -23,6 +23,12 @@ describe("leaderboard", () => {
     expect(ranked.every((e) => e.planId === "50k")).toBe(true);
   });
 
+  it("filtre par pays", () => {
+    const ranked = rankEntries(entries, "season", "all", "us");
+    expect(ranked.length).toBeGreaterThan(0);
+    expect(ranked.every((e) => e.country === "us")).toBe(true);
+  });
+
   it("des montants entiers en centimes", () => {
     for (const e of entries) {
       for (const v of Object.values(e.profit)) expect(Number.isInteger(v)).toBe(true);

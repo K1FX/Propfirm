@@ -421,7 +421,8 @@
       "pass": "Rang Pass",
       "account": "Compte",
       "days": "Jours",
-      "profit": "Profit"
+      "profit": "Profit",
+      "country": "Pays"
     },
     "change": {
       "up": "Monte de {n} places",
@@ -439,7 +440,11 @@
       "average": "Profit moyen"
     },
     "vsLeader": "{pct} % du leader",
-    "leader": "Leader"
+    "leader": "Leader",
+    "countries": {
+      "label": "Pays",
+      "all": "Tous"
+    }
   },
   "Trust": {
     "label": "Chiffres clés",
@@ -583,7 +588,8 @@
     "hours": "Horaires : {hours}",
     "getHelp": "Obtenir de l'aide",
     "discord": "Rejoindre le Discord",
-    "mapLabel": "Localisation de l'équipe support"
+    "mapLabel": "Localisation de l'équipe support",
+    "more": "Et +"
   },
   "Faq": {
     "eyebrow": "FAQ",

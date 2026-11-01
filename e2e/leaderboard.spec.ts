@@ -42,3 +42,11 @@ for (const path of pages) {
     expect(overflow).toBeLessThanOrEqual(0);
   });
 }
+
+test("classement : drapeaux et filtre par pays", async ({ page }) => {
+  await page.goto("/fr/leaderboard");
+  await expect(page.getByRole("img", { name: "États-Unis" }).first()).toBeVisible();
+  await page.getByLabel("Pays", { exact: true }).selectOption("fr");
+  await expect(page.getByRole("img", { name: "États-Unis" })).toHaveCount(0);
+  await expect(page.getByRole("img", { name: "France" }).first()).toBeVisible();
+});
