@@ -201,3 +201,55 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* ---------- Billet de compte « Aurum Pass » ---------- */
+
+/* Deux encoches latérales au niveau de la ligne prédécoupée (69 % de la hauteur). */
+@utility ticket-notch {
+  -webkit-mask:
+    radial-gradient(circle 12px at 0 69%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 12px at 100% 69%, transparent 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle 12px at 0 69%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 12px at 100% 69%, transparent 98%, #000) right / 51% 100% no-repeat;
+}
+
+@keyframes holo-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@utility bg-holo {
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.22) 0 2px, transparent 2px 7px),
+    linear-gradient(
+      100deg,
+      #67e8f9,
+      #c9ced6,
+      #7fe3d0,
+      #f6f8fa,
+      #22d3ee,
+      #9da4ae,
+      #67e8f9,
+      #c9ced6,
+      #7fe3d0
+    );
+  background-size:
+    auto,
+    200% 100%;
+  animation: holo-shift 8s linear infinite;
+}
+
+@utility bg-holo-cyan {
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.18) 0 2px, transparent 2px 7px),
+    linear-gradient(100deg, #0a5f74, #22d3ee, #67e8f9, #0a5f74, #22d3ee, #67e8f9, #0a5f74);
+  background-size:
+    auto,
+    200% 100%;
+  animation: holo-shift 8s linear infinite;
+}

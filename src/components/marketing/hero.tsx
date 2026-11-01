@@ -67,7 +67,7 @@ export function Hero() {
         <HeroCards
           evalLabel={t("cardEval")}
           fundedLabel={t("cardFunded")}
-          footer={t("cardFooter")}
+          subtitle={t("cardFooter")}
         />
       </Container>
     </section>

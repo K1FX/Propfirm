@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { use, type ReactNode } from "react";
 
-import { AccountCard } from "@/components/ui/account-card";
+import { AccountPass } from "@/components/ui/account-pass";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -154,9 +154,21 @@ export default function StyleguidePage({ params }: PageProps<"/[locale]/stylegui
         </Block>
 
         <Block title={t("accounts")}>
-          <div className="grid gap-8 md:grid-cols-2">
-            <AccountCard variant="metal" size="150K" status="Évaluation" footer="ACC-0001" />
-            <AccountCard variant="funded" size="50K" status="Financé" footer="ACC-0002" />
+          <div className="flex flex-wrap gap-10">
+            <AccountPass
+              variant="evaluation"
+              size="150K"
+              status="Évaluation"
+              subtitle="Compte simulé"
+              serial="ACC-150K-2071"
+            />
+            <AccountPass
+              variant="funded"
+              size="50K"
+              status="Financé"
+              subtitle="Compte simulé"
+              serial="ACC-50K-0815"
+            />
           </div>
         </Block>
       </div>

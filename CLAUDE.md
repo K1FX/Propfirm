@@ -50,8 +50,9 @@ Couleurs des rangs du Pass : Bronze `#C98A5A`, Silver `#B8C0CC`, Gold `#E8B04A`,
   `background: linear-gradient(180deg,#F6F8FA 0%,#C9CED6 55%,#9DA4AE 100%); color:#0B0D10; box-shadow: inset 0 1px 0 #FFF, 0 0 0 1px #3A3F47, 0 10px 30px rgba(34,211,238,.18);`
 - **Bouton secondaire** : fond transparent, bordure `#262A31`, texte `#ECEFF3`, hover bordure cyan.
 - **Glow cyan** sur les éléments importants : `box-shadow: 0 0 40px rgba(34,211,238,.22)`.
-- **Cartes de compte** (visuel type carte bancaire) : une version métal brossé
-  (`repeating-linear-gradient(90deg,#2B2F36 0 2px,#23262C 2px 4px)` + reflet en diagonale) et une version noire bordée de cyan pour les comptes financés.
+- **Visuel de compte = billet « Aurum Pass »** (`components/ui/account-pass.tsx`, validé à la place des cartes bancaires) :
+  billet vertical avec bande holographique animée, logo, taille du compte, mini-courbe, ligne prédécoupée à encoches et talon à code-barres
+  (généré depuis le n° de compte). Version évaluation : chrome/argent. Version financée : bordure et accents cyan avec glow.
 - Coins arrondis : cartes 16–20px, boutons 10–12px, badges 999px.
 - Pas d'emojis dans l'UI, icônes Lucide en trait fin.
 
@@ -66,7 +67,7 @@ Contraste texte ≥ 4.5:1, focus visibles (anneau cyan), vrais `<button>`/`<a>`,
 ### 3.5 Référence de page d'accueil (structure validée)
 1. Bandeau promo (code de réduction)
 2. Header : logo + liens (Challenges, Règles, Aurum Pass, Payouts, FAQ) + Connexion + bouton chrome « Commencer »
-3. Hero : badge « PROP FIRM FUTURES · MARCHÉS CME », grand titre chrome, sous-titre, 2 CTA, 3 chiffres clés ; à droite, 2 cartes de compte inclinées (métal 150K « Évaluation » + noire/cyan 50K « Financé »)
+3. Hero : badge « PROP FIRM FUTURES · MARCHÉS CME », grand titre chrome, sous-titre, 2 CTA, 3 chiffres clés ; à droite, 2 billets Aurum Pass inclinés (150K « Évaluation » chrome + 50K « Financé » cyan)
 4. Bandeau des contrats tradables : ES, NQ, YM, RTY, CL, GC, MES, MNQ
 5. Grille des challenges (4 cartes, la 50K mise en avant « Recommandé »)
 6. Section Aurum Pass : carte du rang actuel avec barre d'XP, piste des 5 rangs, sources d'XP
@@ -215,7 +216,7 @@ Les performances passées ne préjugent pas des performances futures. » Textes 
 
 ## Avancement
 - [x] Phase 0 – Setup (Next.js 16.4, Tailwind 4, next-intl fr/en, Drizzle + Supabase prêts, Vitest + Playwright, structure §10)
-- [x] Phase 1 – Design system (`components/ui` : Button/ButtonLink, Card, Badge, ProgressBar, AccountCard, Section, Reveal, Logo), page d'accueil §3.5, `/styleguide`, pages « en construction » via `(marketing)/[slug]`. Config remplie en avance : `plans.ts`, `rules.ts`, `pass.ts` (rangs/XP), `promo.ts` (code PLACEHOLDER).
+- [x] Phase 1 – Design system (`components/ui` : Button/ButtonLink, Card, Badge, ProgressBar, AccountPass (billet), Section, Reveal, Logo), page d'accueil §3.5, `/styleguide`, pages « en construction » via `(marketing)/[slug]`. Config remplie en avance : `plans.ts`, `rules.ts`, `pass.ts` (rangs/XP), `promo.ts` (code PLACEHOLDER).
 - [~] Intérieur (en avance, en mode démo) : moteur de règles `server/rules` (drawdown EOD trailing + lock, consistance, jours min, contrats, perte jour, alertes 80 %) + `lib/session.ts` (jour CME Chicago) + `TradingProvider`/`MockTradingProvider` – tous testés. Dashboard trader : vue d'ensemble, comptes, page compte (courbe Recharts, règles, trades), Pass (rang, piste 30 paliers, missions, classement), payouts. Données : `server/demo/data.ts` (DÉMO, à remplacer par la base en Phase 3). « Connexion » pointe vers /dashboard en attendant l'auth.
 - [ ] Phase 2 – Pages publiques
 

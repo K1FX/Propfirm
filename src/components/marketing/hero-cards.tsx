@@ -2,12 +2,12 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 
-import { AccountCard } from "@/components/ui/account-card";
+import { AccountPass } from "@/components/ui/account-pass";
 
-type Props = { evalLabel: string; fundedLabel: string; footer: string };
+type Props = { evalLabel: string; fundedLabel: string; subtitle: string };
 
-/** Les deux cartes inclinées du hero (métal 150K + financée 50K). */
-export function HeroCards({ evalLabel, fundedLabel, footer }: Props) {
+/** Les deux billets « Aurum Pass » du hero (150K évaluation + 50K financé). */
+export function HeroCards({ evalLabel, fundedLabel, subtitle }: Props) {
   const reduce = useReducedMotion();
 
   const float = (delay: number) =>
@@ -19,28 +19,40 @@ export function HeroCards({ evalLabel, fundedLabel, footer }: Props) {
         };
 
   return (
-    <div className="relative mx-auto h-[300px] w-full max-w-[540px] sm:h-[420px]" aria-hidden>
+    <div className="relative mx-auto h-[400px] w-full max-w-[480px] sm:h-[480px]" aria-hidden>
       <div className="absolute top-1/2 left-1/2 size-[420px] -translate-1/2 rounded-full bg-cyan/15 blur-[100px]" />
       <motion.div
-        className="absolute top-0 right-0 w-[74%] rotate-[7deg]"
-        initial={reduce ? false : { opacity: 0, x: 40 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        className="absolute top-0 left-[4%] w-[46%] -rotate-[8deg]"
+        initial={reduce ? false : { opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.div {...float(0)}>
-          <AccountCard variant="metal" size="150K" status={evalLabel} footer={footer} />
+          <AccountPass
+            variant="evaluation"
+            size="150K"
+            status={evalLabel}
+            subtitle={subtitle}
+            serial="AF-150K-0001"
+          />
         </motion.div>
       </motion.div>
       <motion.div
-        className="absolute bottom-0 left-0 w-[74%] -rotate-[6deg]"
-        initial={reduce ? false : { opacity: 0, x: -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        className="absolute right-[4%] bottom-0 w-[46%] rotate-[7deg]"
+        initial={reduce ? false : { opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.div {...float(1.5)}>
-          <AccountCard variant="funded" size="50K" status={fundedLabel} footer={footer} />
+          <AccountPass
+            variant="funded"
+            size="50K"
+            status={fundedLabel}
+            subtitle={subtitle}
+            serial="AF-50K-0002"
+          />
         </motion.div>
       </motion.div>
     </div>
