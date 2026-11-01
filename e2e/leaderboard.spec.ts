@@ -8,7 +8,10 @@ test("classement public : podium, filtres et bandeau démo", async ({ page }) =>
   await expect(page.getByRole("note")).toContainText("Données de démonstration");
   await expect(page.getByRole("region", { name: "Podium" })).toBeVisible();
   await page.getByRole("button", { name: "50K", exact: true }).click();
-  await expect(page.getByRole("button", { name: "50K", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "50K", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
 });
 
 test("classement trader : la position de l'utilisateur est visible", async ({ page }) => {

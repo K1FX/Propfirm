@@ -417,6 +417,13 @@
     "yourPosition": "Your position",
     "empty": "No traders for this filter.",
     "podium": "Podium",
-    "dashboardSubtitle": "Your position among funded traders, by realized profit."
+    "dashboardSubtitle": "Your position among funded traders, by realized profit.",
+    "stats": {
+      "traders": "Ranked traders",
+      "total": "Total profit",
+      "average": "Average profit"
+    },
+    "vsLeader": "{pct}% of leader",
+    "leader": "Leader"
   }
 }

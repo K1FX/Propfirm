@@ -315,3 +315,33 @@ html {
   text-transform: uppercase;
   color: var(--text-muted);
 }
+
+/* ---------- Classement ---------- */
+
+@keyframes shine-sweep {
+  0% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  60%,
+  100% {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+
+/* Reflet lumineux qui balaie un élément (à placer sur un enfant absolu). */
+@utility animate-shine {
+  animation: shine-sweep 4.5s ease-in-out infinite;
+}
+
+/* Projecteur derrière le 1er du podium. */
+@utility spotlight {
+  background: conic-gradient(
+    from 180deg at 50% 0%,
+    transparent 0deg,
+    rgba(232, 176, 74, 0.16) 20deg,
+    transparent 40deg,
+    transparent 320deg,
+    rgba(232, 176, 74, 0.16) 340deg,
+    transparent 360deg
+  );
+}

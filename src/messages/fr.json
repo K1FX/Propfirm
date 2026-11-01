@@ -417,6 +417,13 @@
     "yourPosition": "Votre position",
     "empty": "Aucun trader pour ce filtre.",
     "podium": "Podium",
-    "dashboardSubtitle": "Votre position parmi les traders financés, par profit réalisé."
+    "dashboardSubtitle": "Votre position parmi les traders financés, par profit réalisé.",
+    "stats": {
+      "traders": "Traders classés",
+      "total": "Profit cumulé",
+      "average": "Profit moyen"
+    },
+    "vsLeader": "{pct} % du leader",
+    "leader": "Leader"
   }
 }
