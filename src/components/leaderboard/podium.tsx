@@ -5,7 +5,7 @@ import { Crown } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
-import { plans } from "@/config/plans";
+import { ACCOUNT_SIZE } from "@/config/sizes";
 import { formatAccountSize, formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { LeaderboardEntry, LeaderboardPeriod } from "@/server/leaderboard/rank";
@@ -69,7 +69,7 @@ export function Podium({ top, period, locale, animationKey }: Props) {
         const e = top[i]!;
         const p = places[i]!;
         const first = i === 0;
-        const size = formatAccountSize(plans.find((x) => x.id === e.planId)!.accountSize);
+        const size = formatAccountSize(ACCOUNT_SIZE[e.planId]);
 
         return (
           <motion.div

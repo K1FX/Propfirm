@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { plans, type PlanId } from "@/config/plans";
+import { ACCOUNT_SIZE, SIZES, type SizeId as PlanId } from "@/config/sizes";
 import { formatAccountSize, formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import {
@@ -156,7 +156,7 @@ export function LeaderboardView({ entries, locale, limit = 25 }: Props) {
           <Badge variant={e.rank}>{tPass(`${e.rank}.name`)}</Badge>
         </span>
         <span className="hidden text-right tabular text-sm text-text-muted sm:block">
-          {formatAccountSize(plans.find((p) => p.id === e.planId)!.accountSize)}
+          {formatAccountSize(ACCOUNT_SIZE[e.planId])}
           <span className="block text-[11px]">
             {e.tradingDays[period]} {t("cols.days").toLowerCase()}
           </span>
@@ -184,7 +184,7 @@ export function LeaderboardView({ entries, locale, limit = 25 }: Props) {
           onChange={setSize}
           options={[
             { value: "all" as const, label: t("sizes.all") },
-            ...plans.map((p) => ({ value: p.id, label: formatAccountSize(p.accountSize) })),
+            ...SIZES.map((s) => ({ value: s, label: formatAccountSize(ACCOUNT_SIZE[s]) })),
           ]}
         />
       </div>

@@ -3,7 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { ButtonLink } from "@/components/ui/button";
 import { Section, SectionHeading } from "@/components/ui/section";
-import { evaluationRules, fundedRules } from "@/config/rules";
+import { getOffer, globalRules, programs } from "@/config/plans";
 import { formatMoney } from "@/lib/format";
 
 const KEYS = [
@@ -23,15 +23,18 @@ export function FaqSection() {
   const locale = useLocale();
   const money = (c: number) => formatMoney(c, { locale });
   const values = {
-    minDays: evaluationRules.minTradingDays,
-    consistency: evaluationRules.consistencyMaxBestDayPct,
-    lock: money(evaluationRules.drawdownLockBuffer),
-    winning: fundedRules.payoutMinWinningDays,
-    winningMin: money(fundedRules.winningDayMin),
-    minPayout: money(fundedRules.payoutMin),
-    days: fundedRules.payoutFrequencyDays,
-    threshold: money(fundedRules.fullSplitThreshold),
-    split: fundedRules.profitSplitPct,
+    rushDays: programs.rush.evalMinDays,
+    flexDays: programs.flex.evalMinDays,
+    flexConsistency: programs.flex.evalConsistencyPct ?? 0,
+    lock: money(globalRules.drawdownLockBuffer),
+    winning: globalRules.payoutEveryWinningDays,
+    winningMin: money(globalRules.winningDayMin),
+    minPayout: money(globalRules.payoutMin),
+    capMin: money(getOffer("rush", "25k").funded.payoutCap),
+    capMax: money(getOffer("rush", "150k").funded.payoutCap),
+    split: globalRules.profitSplitPct,
+    maxInstant: globalRules.maxActiveInstantAccounts,
+    deadline: globalRules.activationDeadlineDays,
   };
 
   return (

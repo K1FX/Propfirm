@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import type { AccountView } from "@/server/accounts/service";
 
 import { formatDay } from "./format";
-import { StatusBadge } from "./status-badge";
+import { ProgramBadge, StatusBadge } from "./status-badge";
 
 export function AccountSummaryCard({ account }: { account: AccountView }) {
   const t = useTranslations("Dashboard.account");
@@ -19,7 +19,8 @@ export function AccountSummaryCard({ account }: { account: AccountView }) {
   const money = (c: number, signed = false) => formatMoney(c, { locale, signed, showCents: false });
   const e = account.evaluation;
   const breached = account.status === "breached";
-  const passed = account.status === "passed";
+  const passed = account.status === "passed" || account.status === "passed_awaiting_activation";
+  const awaiting = account.status === "passed_awaiting_activation";
   const tPassed = useTranslations("Dashboard.account.passedCard");
 
   return (
@@ -34,9 +35,12 @@ export function AccountSummaryCard({ account }: { account: AccountView }) {
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-chrome font-display text-3xl font-bold">
-            {formatAccountSize(account.plan.accountSize)}
+            {formatAccountSize(account.startBalance)}
           </p>
-          <p className="mt-1 tabular text-xs text-text-muted">{account.id}</p>
+          <div className="mt-1 flex items-center gap-2">
+            <ProgramBadge type={account.programType} />
+            <p className="tabular text-xs text-text-muted">{account.id}</p>
+          </div>
         </div>
         <div className="flex flex-col items-end gap-1.5">
           <StatusBadge status={account.status} />
@@ -68,11 +72,11 @@ export function AccountSummaryCard({ account }: { account: AccountView }) {
       </dl>
 
       <div className="flex flex-col gap-4">
-        {account.plan && account.phase === "evaluation" && (
+        {account.rules.profitTarget !== null && (
           <ProgressBar
             value={e.targetProgressPct}
             label={t("target")}
-            valueLabel={`${money(Math.max(0, e.profit))} / ${money(account.plan.profitTarget)}`}
+            valueLabel={`${money(Math.max(0, e.profit))} / ${money(account.rules.profitTarget)}`}
           />
         )}
         <ProgressBar
@@ -85,7 +89,9 @@ export function AccountSummaryCard({ account }: { account: AccountView }) {
 
       {passed && (
         <ButtonLink href={`/dashboard/accounts/${account.id}`} variant="cyan" size="sm">
-          {tPassed("cta")}
+          {awaiting && account.activation
+            ? tPassed("payActivation", { fee: money(account.activation.fee) })
+            : tPassed("cta")}
           <ArrowUpRight />
         </ButtonLink>
       )}

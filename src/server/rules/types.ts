@@ -1,14 +1,32 @@
+import type { ProgramType, SizeId } from "@/config/plans";
 import type { Cents } from "@/lib/format";
 
-export type RuleSet = {
+export type Phase = "evaluation" | "funded";
+
+/**
+ * Règles figées d'un compte (copie prise au moment de l'achat ou du passage en financé).
+ * Un changement de config ne modifie jamais un compte existant.
+ */
+export type RulesSnapshot = {
+  programType: ProgramType;
+  size: SizeId;
+  phase: Phase;
+  riskTemplate: string;
   startBalance: Cents;
-  profitTarget: Cents | null; // null pour un compte financé
+  profitTarget: Cents | null;
   maxDrawdown: Cents;
   drawdownLockBuffer: Cents;
-  consistencyMaxBestDayPct: number | null; // null = règle non appliquée
+  /** Limite « soft » : la journée est bloquée, le compte n'est pas perdu. */
+  dailyLossLimit: Cents | null;
+  /** Éval : % du profit total ; financé : % du profit du cycle de payout. */
+  consistencyPct: number | null;
   minTradingDays: number;
   maxContracts: { mini: number; micro: number };
-  dailyLossLimit: Cents | null;
+  winningDayMin: Cents;
+  payoutEveryWinningDays: number;
+  payoutCap: Cents | null;
+  payoutMin: Cents;
+  profitSplitPct: number;
   alertThresholdPct: number;
 };
 
@@ -28,7 +46,7 @@ export type ViolationType = "drawdown" | "dailyLoss" | "maxContracts";
 export type Violation = {
   type: ViolationType;
   day: string;
-  /** Violation éliminatoire (compte « breached ») ou simple avertissement. */
+  /** Violation éliminatoire (compte « breached ») ou non (journée bloquée, avertissement). */
   fatal: boolean;
 };
 
@@ -37,6 +55,21 @@ export type AlertType = "drawdown" | "dailyLoss" | "consistency";
 export type Alert = { type: AlertType; usedPct: number };
 
 export type DrawdownPoint = { day: string; threshold: Cents; closingBalance: Cents };
+
+export type PayoutStatus = {
+  eligible: boolean;
+  winningDays: number;
+  requiredWinningDays: number;
+  /** Profit du cycle en cours (depuis le dernier payout). */
+  cycleProfit: Cents;
+  /** Montant retirable avant split (plafonné). */
+  payable: Cents;
+  /** Part du trader. */
+  traderShare: Cents;
+  payoutCap: Cents | null;
+  minPayout: Cents;
+  consistencyOk: boolean;
+};
 
 export type Evaluation = {
   status: "active" | "passed" | "breached";
@@ -51,11 +84,15 @@ export type Evaluation = {
   drawdownHistory: DrawdownPoint[];
   tradingDays: number;
   minDaysMet: boolean;
+  /** Meilleur jour sur le périmètre de consistance (total en éval, cycle en financé). */
   bestDay: Cents;
-  /** Part du meilleur jour dans le profit total (0–100+), null si profit ≤ 0. */
   bestDayShareOfProfitPct: number | null;
   consistencyOk: boolean;
+  /** Jours gagnants (≥ seuil) dans le cycle de payout en cours. */
   winningDays: number;
+  /** Jours où la limite journalière « soft » a été atteinte (trading bloqué ce jour-là). */
+  dailyLossLockedDays: string[];
   violations: Violation[];
   alerts: Alert[];
+  payout: PayoutStatus | null;
 };

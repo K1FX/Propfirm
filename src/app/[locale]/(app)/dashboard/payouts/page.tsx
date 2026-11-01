@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { ProgressBar } from "@/components/ui/progress-bar";
-import { fundedRules } from "@/config/rules";
+import { globalRules } from "@/config/plans";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { formatAccountSize, formatMoney } from "@/lib/format";
@@ -24,7 +24,7 @@ export default async function PayoutsPage({ params }: PageProps<"/[locale]/dashb
   const locale = await getLocale();
   const t = await getTranslations("Dashboard.payouts");
   const money = (c: number) => formatMoney(c, { locale });
-  const funded = (await listAccounts()).filter((a) => a.status === "funded" && a.payout);
+  const funded = (await listAccounts()).filter((a) => a.status === "funded" && a.evaluation.payout);
 
   return (
     <>
@@ -33,15 +33,13 @@ export default async function PayoutsPage({ params }: PageProps<"/[locale]/dashb
       <div className="flex flex-wrap gap-2">
         <Badge variant="neutral">
           <Clock className="size-3.5" aria-hidden />
-          {t("frequency")}
-        </Badge>
-        <Badge variant="neutral">{t("min", { amount: money(fundedRules.payoutMin) })}</Badge>
-        <Badge variant="neutral">
-          {t("split", {
-            threshold: money(fundedRules.fullSplitThreshold),
-            pct: fundedRules.profitSplitPct,
+          {t("frequency", {
+            days: globalRules.payoutEveryWinningDays,
+            min: money(globalRules.winningDayMin),
           })}
         </Badge>
+        <Badge variant="neutral">{t("min", { amount: money(globalRules.payoutMin) })}</Badge>
+        <Badge variant="neutral">{t("split", { pct: globalRules.profitSplitPct })}</Badge>
       </div>
 
       {funded.length === 0 && (
@@ -52,7 +50,7 @@ export default async function PayoutsPage({ params }: PageProps<"/[locale]/dashb
 
       <div className="grid gap-5 lg:grid-cols-2">
         {funded.map((a) => {
-          const p = a.payout!;
+          const p = a.evaluation.payout!;
           return (
             <Card key={a.id} highlighted={p.eligible} className="flex flex-col gap-5 p-6">
               <div className="flex items-start justify-between gap-3">
@@ -61,7 +59,7 @@ export default async function PayoutsPage({ params }: PageProps<"/[locale]/dashb
                     href={`/dashboard/accounts/${a.id}`}
                     className="text-chrome font-display text-3xl font-bold hover:underline"
                   >
-                    {formatAccountSize(a.plan.accountSize)}
+                    {formatAccountSize(a.startBalance)}
                   </Link>
                   <p className="mt-1 tabular text-xs text-text-muted">{a.id}</p>
                 </div>
@@ -78,8 +76,13 @@ export default async function PayoutsPage({ params }: PageProps<"/[locale]/dashb
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-text-muted">{t("gross")}</dt>
-                  <dd className="mt-1 tabular text-xl font-semibold">{money(p.grossProfit)}</dd>
+                  <dt className="text-xs text-text-muted">{t("cycleProfit")}</dt>
+                  <dd className="mt-1 tabular text-xl font-semibold">{money(p.cycleProfit)}</dd>
+                  {p.payoutCap !== null && (
+                    <p className="mt-1 text-xs text-text-muted">
+                      {t("cap", { amount: money(p.payoutCap) })}
+                    </p>
+                  )}
                 </div>
               </dl>
               <ProgressBar

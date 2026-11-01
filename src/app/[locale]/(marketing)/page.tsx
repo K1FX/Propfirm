@@ -1,13 +1,13 @@
 import { setRequestLocale } from "next-intl/server";
 import { use } from "react";
 
-import { ChallengesGrid } from "@/components/marketing/challenges-grid";
 import { ContractsTicker } from "@/components/marketing/contracts-ticker";
 import { FaqSection } from "@/components/marketing/faq-section";
 import { FinalCta } from "@/components/marketing/final-cta";
 import { Hero } from "@/components/marketing/hero";
 import { HowItWorks } from "@/components/marketing/how-it-works";
 import { PassSection } from "@/components/marketing/pass-section";
+import { PlansSection } from "@/components/marketing/plans-section";
 import { ReviewsSection } from "@/components/marketing/reviews-section";
 import { StickyCta } from "@/components/marketing/sticky-cta";
 import { SupportSection } from "@/components/marketing/support-section";
@@ -27,7 +27,7 @@ export default function HomePage({ params }: PageProps<"/[locale]">) {
       <Hero />
       <ContractsTicker />
       <HowItWorks />
-      <ChallengesGrid />
+      <PlansSection />
       <WhyUs />
       <PassSection />
       <SupportSection />

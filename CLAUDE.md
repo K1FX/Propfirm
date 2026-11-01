@@ -82,33 +82,47 @@ Pas de nom dans le symbole. Prévoir aussi : favicon, icône d'app 512px, versio
 Tout ce qui est marque est dans `src/config/brand.ts` : `name`, `domain`, `supportEmail`, `passName`, réseaux sociaux.
 Ne jamais écrire le nom de la marque en dur ailleurs.
 
-## 5. Offres (dans `src/config/plans.ts`, modifiables sans toucher au code)
-Évaluation **1 étape**, sans limite de temps, drawdown **EOD trailing** (calculé à la clôture du jour de trading).
+## 5. Offres (source de vérité : `src/config/plans.ts`, typé et validé par Zod — jamais de valeur en dur ailleurs)
+3 types de compte × 4 tailles (25K, 50K, 100K, 150K). Montants en centimes en base. « MOST POPULAR » = 50K.
 
-| Plan | Prix | Objectif | Drawdown EOD | Contrats max | Perte jour (optionnelle) |
+**RUSH** — « Validé en 1 jour » — évaluation 1 étape, sans consistance, 1 jour min, perte journalière **soft**
+| Taille | Prix | Objectif | DD EOD | Perte/jour (soft) | Reset | Contrats | Pay Later (now + activation) |
+|---|---|---|---|---|---|---|---|
+| 25K | 89 $ | 1 500 $ | 1 000 $ | 600 $ | 55 $ | 1 / 10 | 39 $ + 69 $ |
+| 50K | 129 $ | 3 000 $ | 2 000 $ | 1 250 $ | 89 $ | 4 / 40 | 59 $ + 99 $ |
+| 100K | 229 $ | 6 000 $ | 3 500 $ | 2 500 $ | 155 $ | 8 / 80 | 99 $ + 179 $ |
+| 150K | 329 $ | 9 000 $ | 5 000 $ | 3 750 $ | 215 $ | 12 / 120 | 149 $ + 259 $ |
+
+**FLEX** — « Validé en 3 jours » — évaluation 1 étape, consistance 40 %, 3 jours min, pas de perte journalière
+| Taille | Prix | Objectif | DD EOD | Reset | Contrats | Pay Later |
+|---|---|---|---|---|---|---|
+| 25K | 99 $ | 1 500 $ | 1 000 $ | 69 $ | 1 / 10 | 45 $ + 79 $ |
+| 50K | 149 $ | 3 000 $ | 2 000 $ | 99 $ | 4 / 40 | 65 $ + 119 $ |
+| 100K | 239 $ | 6 000 $ | 3 000 $ | 155 $ | 8 / 80 | 105 $ + 189 $ |
+| 150K | 335 $ | 9 000 $ | 4 500 $ | 219 $ | 12 / 120 | 149 $ + 265 $ |
+
+**INSTANT** — « Financement immédiat » — pas d'évaluation, pas de reset (racheter), pas de Pay Later, max 5 comptes actifs
+| Taille | Prix | DD EOD | Perte/jour (soft) | Consistance | Contrats |
 |---|---|---|---|---|---|
-| 25K | 89 $ | 1 500 $ | 1 000 $ | 2 mini / 20 micro | – |
-| 50K | 109 $ | 3 000 $ | 2 000 $ | 5 mini / 50 micro | – |
-| 100K | 199 $ | 6 000 $ | 3 000 $ | 10 mini / 100 micro | – |
-| 150K | 279 $ | 9 000 $ | 4 500 $ | 15 mini / 150 micro | – |
+| 25K | 309 $ | 1 000 $ | – | 20 % | 1 / 10 |
+| 50K | 439 $ | 2 000 $ | 1 250 $ | 20 % | 4 / 40 |
+| 100K | 589 $ | 4 000 $ | 2 500 $ | 20 % | 8 / 80 |
+| 150K | 719 $ | 5 250 $ | 3 000 $ | 20 % | 12 / 120 |
 
-(Prix indicatifs, alignés sur le marché, à ajuster.)
+**Règles communes** : drawdown EOD trailing (mis à jour à la clôture, bloqué au solde initial + 100 $) ; jour de trading = session CME 17:00–16:00 America/Chicago ;
+perte journalière « soft » = trading suspendu jusqu'à la session suivante, compte conservé ; positions fermées avant la fin de session.
 
-Règles communes (toutes paramétrables) :
-- Règle de consistance en évaluation : le meilleur jour ≤ 50 % du profit total
-- Minimum de jours de trading pour valider : 2
-- Positions fermées avant la fin de session ; pas de position pendant la pause quotidienne
-- Le **jour de trading** suit la session CME Globex : de 17:00 à 16:00 heure de Chicago (America/Chicago). Tous les calculs "fin de journée" se font dans ce fuseau.
-- Le drawdown trailing se bloque (lock) au solde initial + 100 $ une fois atteint
-- Activation compte financé : frais d'activation 0 $ (argument marketing)
+**Comptes financés** : DD et contrats identiques à l'évaluation (INSTANT : tableau ci-dessus) ; perte/jour : RUSH = éval, FLEX = aucune, INSTANT = tableau ;
+consistance (meilleur jour ≤ X % du profit du cycle de payout) : RUSH 35 %, FLEX aucune, INSTANT 20 %.
+**Payouts** : pas de payout quotidien ; un payout tous les **5 jours gagnants** (session clôturée à **≥ +150 $**), compteur remis à 0 après chaque payout ;
+minimum 250 $ ; plafond par payout 25K 1 000 $ · 50K 2 000 $ · 100K 2 500 $ · 150K 3 000 $ ; profit split 90 %.
+Sur la page des plans, les règles de payout ne sont PAS sur les cartes : elles sont dans la fenêtre « Voir les règles Funded ».
 
-Comptes financés / payouts :
-- Profit split : 90 % (100 % sur les premiers 10 000 $, paramétrable)
-- Payout possible après 5 jours gagnants (jour gagnant ≥ 100 $), minimum 250 $
-- Fréquence : toutes les 2 semaines ; **hebdomadaire à partir du rang Gold**
-- Options payantes (add-ons) : reset du compte, payout quotidien, split amélioré
-
-Codes promo : pourcentage ou montant fixe, date d'expiration, limite d'utilisations, restriction par plan.
+**Paiement** : unique (prix plein, 0 $ d'activation) ou **Pay Later** (RUSH/FLEX : prix réduit + frais d'activation seulement si réussite ;
+interrupteur global `payLaterEnabled` ; non cumulable avec un code promo ; statut `passed_awaiting_activation` puis `expired` après 14 jours).
+**Promo** (`config/promo.ts`) : -40 % sur le paiement unique (arrondi au dollar inférieur), types concernés, date de fin, `appliesToResets`.
+**Règles figées** : chaque compte stocke une copie de ses règles (`rules_snapshot`) ; un changement de config ne modifie jamais un compte existant.
+**Fournisseur** : un gabarit de risque par type × taille × phase (ex. `RUSH_50K_EVAL`, `INSTANT_50K_FUNDED`).
 
 ## 6. Le Aurum Pass (battle pass) – cœur de la rétention
 ### Rangs (permanents, basés sur l'XP totale)
@@ -116,8 +130,8 @@ Codes promo : pourcentage ou montant fixe, date d'expiration, limite d'utilisati
 |---|---|---|
 | Bronze | 0 | Badge profil, accès au Discord privé |
 | Silver | 1 000 | -10 % sur tous les challenges |
-| Gold | 2 000 | Payouts hebdomadaires, -15 % |
-| Platinum | 4 000 | 1 reset gratuit / mois, split 95 % |
+| Gold | 2 000 | Payout tous les 4 jours gagnants (au lieu de 5), -15 % |
+| Platinum | 4 000 | 1 reset gratuit / mois, split 95 % (au lieu de 90 %) |
 | Elite | 8 000 | Compte 50K offert, split 100 %, manager dédié |
 
 ### Saisons
@@ -220,6 +234,7 @@ Les performances passées ne préjugent pas des performances futures. » Textes 
 - [~] Intérieur (en avance, en mode démo) : moteur de règles `server/rules` (drawdown EOD trailing + lock, consistance, jours min, contrats, perte jour, alertes 80 %) + `lib/session.ts` (jour CME Chicago) + `TradingProvider`/`MockTradingProvider` – tous testés. Dashboard trader : vue d'ensemble, comptes, page compte refaite façon terminal premium (5 indicateurs, courbe avec légende, barre minimum→départ→objectif, calendrier P&L/trades, règles, trades), compte validé = contour lumineux animé + « Passer en Funded », Pass (rang, piste 30 paliers, missions, classement), payouts. Données : `server/demo/data.ts` (DÉMO, à remplacer par la base en Phase 3). « Connexion » pointe vers /dashboard en attendant l'auth.
 - [~] Classement (choix : par profit $ réalisé sur comptes financés) : page publique `/leaderboard` (dans le menu) + `/dashboard/leaderboard` avec position de l'utilisateur épinglée. Podium top 3, filtres période (saison / mois / toujours) et taille de compte. Données : `server/leaderboard/service.ts` (DÉMO, bandeau obligatoire). À faire en Phase 3 : vraies données + option « ne pas apparaître » dans le profil.
 - [x] Refonte landing « conversion » : fond quasi noir ; hero (titre en config `hero.ts` + variantes A/B, chiffres cyan), barre de confiance (`config/trust.ts` : promesses tirées de la config, vraies stats seulement au-delà de seuils), bandeau promo avec compte à rebours masquable (`promo.ts`), bouton fixe mobile, How it works (visuels en code), plans avec onglets/prix barré/moyens de paiement (`payments.ts`), Pourquoi nous, Pass, Support (`support.ts`, carte en points), avis (masqué sans vraies données), FAQ, CTA final. `track()` dans `lib/analytics.ts` (dataLayer). Langue par défaut : FR pendant la construction (passer `defaultLocale` à "en" au lancement). Lighthouse mobile ≈ 86–91 (a11y/SEO/bonnes pratiques 100).
+- [x] Types de compte RUSH / FLEX / INSTANT : `config/plans.ts` (Zod), `config/promo.ts` (-40 %), moteur de règles par type × phase (`server/rules/engine.ts` + `snapshot.ts`, 27 tests), statuts Pay Later, limite INSTANT, schéma Drizzle `trading_accounts` + migration `drizzle/0000_…` (RLS : lecture de ses propres comptes). Page des plans : onglets, interrupteur Pay Later, infobulles, fenêtre « Voir les règles Funded », défilement mobile. À faire avec Supabase/Stripe (Phases 3–4) : checkout (refus du code en Pay Later, limite 5 INSTANT), paiement de l'activation + email + expiration, achat de resets, stats back-office par type.
 - [ ] Phase 2 – Pages publiques
 
 Notes techniques :
@@ -233,4 +248,5 @@ Notes techniques :
 - Performance landing : pas de framer-motion sur le site public (animations en CSS : `.reveal`, `animate-float`, `useInViewOnce`). Ne jamais animer un texte du hero en changeant son contenu (pénalise le LCP) : animer via `transform`.
 - next-intl : ne pas envoyer tout le dictionnaire au client ; utiliser `pickClientMessages()` (`src/i18n/client-messages.ts`) et ajouter le namespace d'un nouveau composant client au bon groupe.
 - À REMPLIR avant lancement : `brand.discordUrl`, `promo` (vrai code + date), `trust.payoutProcessingHours`, `support` (langues/horaires), FAQ plateformes/remboursement/pays.
+- Ne jamais importer `config/plans.ts` (Zod) dans un composant client : passer les données en props depuis un composant serveur, ou utiliser `config/sizes.ts` (léger).
 - Langue : utiliser `toLocale()` (`src/i18n/routing.ts`) pour valider le paramètre `[locale]`.

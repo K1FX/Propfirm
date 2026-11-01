@@ -31,7 +31,7 @@ export default async function DashboardHome({ params }: PageProps<"/[locale]/das
   const funded = accounts.filter((a) => a.status === "funded");
   const fundedProfit = funded.reduce((s, a) => s + a.evaluation.profit, 0);
   const payoutAvailable = funded.reduce(
-    (s, a) => s + (a.payout?.eligible ? a.payout.traderShare : 0),
+    (s, a) => s + (a.evaluation.payout?.eligible ? a.evaluation.payout.traderShare : 0),
     0,
   );
   const rank = getRankProgress(demoUser.totalXp);

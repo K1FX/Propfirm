@@ -13,7 +13,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("accounts") };
 }
 
-const order = { funded: 0, passed: 1, evaluation: 2, failed: 3, breached: 4 } as const;
+const order = {
+  passed_awaiting_activation: 0,
+  passed: 1,
+  funded: 2,
+  evaluation: 3,
+  expired: 4,
+  failed: 5,
+  breached: 6,
+} as const;
 
 export default async function AccountsPage({ params }: PageProps<"/[locale]/dashboard/accounts">) {
   const { locale } = await params;

@@ -1,5 +1,4 @@
-import { plans } from "@/config/plans";
-import { fundedRules } from "@/config/rules";
+import { globalRules, MAX_ACCOUNT_SIZE } from "@/config/plans";
 
 /**
  * Barre de confiance (CLAUDE.md §11 : aucun chiffre inventé).
@@ -40,7 +39,7 @@ export const NO_STATS: RealStats = { totalPaidOut: null, tradersPaid: null, avgP
 
 /** Construit les items affichés : vraie stat si son seuil est atteint, sinon la promesse. */
 export function buildTrustItems(stats: RealStats = NO_STATS): TrustItem[] {
-  const maxSize = Math.max(...plans.map((p) => p.accountSize));
+  const maxSize = MAX_ACCOUNT_SIZE;
   const t = trustConfig.thresholds;
   const items: TrustItem[] = [];
 
@@ -52,11 +51,12 @@ export function buildTrustItems(stats: RealStats = NO_STATS): TrustItem[] {
   items.push(
     stats.tradersPaid !== null && stats.tradersPaid >= t.tradersPaid
       ? { id: "tradersPaid", value: stats.tradersPaid, kind: "count", labelKey: "tradersPaid" }
-      : { id: "split", value: fundedRules.profitSplitPct, kind: "percent", labelKey: "split" },
+      : { id: "split", value: globalRules.profitSplitPct, kind: "percent", labelKey: "split" },
   );
   items.push({
     id: "activation",
-    value: fundedRules.activationFee,
+    // 0 $ en paiement unique (le Pay Later a des frais d'activation : voir le libellé).
+    value: 0,
     kind: "money",
     labelKey: "activation",
   });
@@ -77,9 +77,4 @@ export function buildTrustItems(stats: RealStats = NO_STATS): TrustItem[] {
     });
   }
   return items;
-}
-
-/** Délai minimum avant un premier payout, déduit des règles (jours de trading). */
-export function minDaysToFirstPayout(minEvalDays: number): number {
-  return minEvalDays + fundedRules.payoutMinWinningDays;
 }

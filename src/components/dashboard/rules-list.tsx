@@ -2,7 +2,6 @@ import { AlertTriangle, CheckCircle2, CircleDashed, XCircle } from "lucide-react
 import { useLocale, useTranslations } from "next-intl";
 
 import { Card, CardTitle } from "@/components/ui/card";
-import { evaluationRules, fundedRules } from "@/config/rules";
 import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { AccountView } from "@/server/accounts/service";
@@ -17,20 +16,22 @@ const tones = {
   warning: "text-rank-gold",
 };
 
+/** Règles du compte, lues dans sa copie figée (`account.rules`). */
 export function RulesList({ account }: { account: AccountView }) {
   const t = useTranslations("Dashboard.account");
   const locale = useLocale();
   const e = account.evaluation;
-  const isEval = account.phase === "evaluation";
+  const r = account.rules;
+  const isEval = r.phase === "evaluation";
   const money = (c: number) => formatMoney(c, { locale });
 
   const rows: { label: string; value: string; state: State }[] = [];
 
-  if (isEval) {
+  if (isEval && r.profitTarget !== null) {
     rows.push({
       label: t("target"),
-      value: `${money(Math.max(0, e.profit))} / ${money(account.plan.profitTarget)}`,
-      state: e.profit >= account.plan.profitTarget ? "ok" : "pending",
+      value: `${money(Math.max(0, e.profit))} / ${money(r.profitTarget)}`,
+      state: e.profit >= r.profitTarget ? "ok" : "pending",
     });
   }
 
@@ -42,65 +43,84 @@ export function RulesList({ account }: { account: AccountView }) {
     state:
       account.status === "breached"
         ? "ko"
-        : e.drawdownUsedPct >= evaluationRules.alertThresholdPct
+        : e.drawdownUsedPct >= r.alertThresholdPct
           ? "warning"
           : "ok",
   });
 
   rows.push({
-    label: t("minDays"),
-    value: t("minDaysValue", { count: e.tradingDays, min: evaluationRules.minTradingDays }),
-    state: e.minDaysMet ? "ok" : "pending",
+    label: t("dailyLoss"),
+    value:
+      r.dailyLossLimit === null
+        ? t("none")
+        : t("dailyLossValue", { amount: money(r.dailyLossLimit) }),
+    state: e.dailyLossLockedDays.length > 0 ? "warning" : "ok",
   });
 
-  if (isEval) {
+  if (isEval && r.minTradingDays > 0) {
     rows.push({
-      label: t("consistency"),
-      value:
-        e.bestDayShareOfProfitPct === null
-          ? t("consistencyNA")
-          : t("consistencyValue", {
-              pct: Math.round(e.bestDayShareOfProfitPct),
-              max: evaluationRules.consistencyMaxBestDayPct,
-            }),
-      state: e.bestDayShareOfProfitPct === null ? "pending" : e.consistencyOk ? "ok" : "ko",
-    });
-  } else {
-    rows.push({
-      label: t("winningDays", { min: money(fundedRules.winningDayMin) }),
-      value: t("winningDaysValue", {
-        count: e.winningDays,
-        required: fundedRules.payoutMinWinningDays,
-      }),
-      state: e.winningDays >= fundedRules.payoutMinWinningDays ? "ok" : "pending",
+      label: t("minDays"),
+      value: t("minDaysValue", { count: e.tradingDays, min: r.minTradingDays }),
+      state: e.minDaysMet ? "ok" : "pending",
     });
   }
 
-  const contractViolation = e.violations.some((v) => v.type === "maxContracts");
+  rows.push({
+    label: isEval ? t("consistency") : t("consistencyFunded"),
+    value:
+      r.consistencyPct === null
+        ? t("none")
+        : e.bestDayShareOfProfitPct === null
+          ? t("consistencyNA", { max: r.consistencyPct })
+          : t("consistencyValue", {
+              pct: Math.round(e.bestDayShareOfProfitPct),
+              max: r.consistencyPct,
+            }),
+    state:
+      r.consistencyPct === null || e.bestDayShareOfProfitPct === null
+        ? r.consistencyPct === null
+          ? "ok"
+          : "pending"
+        : e.consistencyOk
+          ? "ok"
+          : "ko",
+  });
+
+  if (!isEval && e.payout) {
+    rows.push({
+      label: t("winningDays", { min: money(r.winningDayMin) }),
+      value: t("winningDaysValue", {
+        count: e.payout.winningDays,
+        required: e.payout.requiredWinningDays,
+      }),
+      state: e.payout.winningDays >= e.payout.requiredWinningDays ? "ok" : "pending",
+    });
+  }
+
   rows.push({
     label: t("contracts"),
-    value: t("contractsValue", account.plan.maxContracts),
-    state: contractViolation ? "warning" : "ok",
+    value: t("contractsValue", r.maxContracts),
+    state: e.violations.some((v) => v.type === "maxContracts") ? "warning" : "ok",
   });
 
   return (
     <Card className="p-5">
       <CardTitle>{t("rules")}</CardTitle>
       <ul className="mt-4 flex flex-col divide-y divide-border">
-        {rows.map((r) => {
-          const Icon = icons[r.state];
+        {rows.map((row) => {
+          const Icon = icons[row.state];
           return (
-            <li key={r.label} className="flex items-start gap-3 py-3.5">
+            <li key={row.label} className="flex items-start gap-3 py-3.5">
               <Icon
-                className={cn("mt-0.5 size-5 shrink-0", tones[r.state])}
+                className={cn("mt-0.5 size-5 shrink-0", tones[row.state])}
                 strokeWidth={1.5}
                 aria-hidden
               />
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-text">{r.label}</p>
-                <p className="mt-0.5 tabular text-xs text-text-muted">{r.value}</p>
+                <p className="text-sm text-text">{row.label}</p>
+                <p className="mt-0.5 tabular text-xs text-text-muted">{row.value}</p>
               </div>
-              <span className={cn("text-xs font-semibold", tones[r.state])}>{t(r.state)}</span>
+              <span className={cn("text-xs font-semibold", tones[row.state])}>{t(row.state)}</span>
             </li>
           );
         })}

@@ -4,9 +4,15 @@ import type { ReactNode } from "react";
 
 import { Reveal } from "@/components/ui/reveal";
 import { Section, SectionHeading } from "@/components/ui/section";
-import { plans } from "@/config/plans";
-import { evaluationRules, fundedRules } from "@/config/rules";
-import { minDaysToFirstPayout } from "@/config/trust";
+import {
+  ACCOUNT_SIZE,
+  globalRules,
+  MAX_ACCOUNT_SIZE,
+  MIN_DAYS_TO_FIRST_PAYOUT,
+  POPULAR_SIZE,
+  programs,
+  SIZES,
+} from "@/config/plans";
 import { formatAccountSize, formatMoney } from "@/lib/format";
 
 /** Scène illustrée en code (pas d'image) : fond, grille de points, widget en verre. */
@@ -58,11 +64,11 @@ function RisingChart() {
 export function HowItWorks() {
   const t = useTranslations("HowItWorks");
   const locale = useLocale();
-  const days = minDaysToFirstPayout(evaluationRules.minTradingDays);
-  const maxSize = formatAccountSize(Math.max(...plans.map((p) => p.accountSize)));
+  const days = MIN_DAYS_TO_FIRST_PAYOUT;
+  const maxSize = formatAccountSize(MAX_ACCOUNT_SIZE);
   const size = locale === "fr" ? `${maxSize} $` : `$${maxSize}`;
   const money = (c: number) => formatMoney(c, { locale, showCents: false });
-  const recommended = plans.find((p) => p.recommended) ?? plans[0]!;
+  const popular = ACCOUNT_SIZE[POPULAR_SIZE];
 
   const hl = (chunks: ReactNode) => (
     <span className="text-cyan drop-shadow-[0_0_18px_rgba(34,211,238,.5)] [-webkit-text-fill-color:currentColor]">
@@ -83,24 +89,22 @@ export function HowItWorks() {
                 <CheckCircle2 className="size-4 text-cyan" aria-hidden />
                 {t("steps.one.widget")}
               </span>
-              <span className="tabular font-semibold text-text">
-                {money(recommended.accountSize)}
-              </span>
+              <span className="tabular font-semibold text-text">{money(popular)}</span>
             </div>
           }
         >
           <div className="flex h-full items-start justify-center px-[8%] pt-[9%]">
             <div className="grid w-full grid-cols-4 gap-2">
-              {plans.map((p) => (
+              {SIZES.map((sz) => (
                 <span
-                  key={p.id}
+                  key={sz}
                   className={
-                    p.recommended
+                    sz === POPULAR_SIZE
                       ? "rounded-[10px] border border-cyan bg-cyan/15 py-3 text-center tabular text-sm font-semibold text-cyan-light shadow-[0_0_24px_rgba(34,211,238,.45)]"
                       : "rounded-[10px] border border-border bg-bg/60 py-3 text-center tabular text-sm text-text-muted"
                   }
                 >
-                  {formatAccountSize(p.accountSize)}
+                  {formatAccountSize(ACCOUNT_SIZE[sz])}
                 </span>
               ))}
             </div>
@@ -110,7 +114,7 @@ export function HowItWorks() {
     },
     {
       key: "two" as const,
-      pill: t("steps.two.pill", { min: evaluationRules.minTradingDays }),
+      pill: t("steps.two.pill", { min: programs.rush.evalMinDays }),
       desc: t("steps.two.desc", { size }),
       scene: (
         <Scene
@@ -136,8 +140,8 @@ export function HowItWorks() {
       key: "three" as const,
       pill: t("steps.three.pill", { days }),
       desc: t("steps.three.desc", {
-        threshold: money(fundedRules.fullSplitThreshold),
-        split: fundedRules.profitSplitPct,
+        split: globalRules.profitSplitPct,
+        days: globalRules.payoutEveryWinningDays,
       }),
       scene: (
         <Scene

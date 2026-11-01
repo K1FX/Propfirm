@@ -5,7 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 /** Encadré lumineux affiché quand une évaluation est réussie. */
-export function PassedBanner() {
+/** `activation` renseigné = Pay Later : frais d'activation à payer avant la date limite. */
+export function PassedBanner({
+  activation = null,
+}: {
+  activation?: { fee: string; deadline: string } | null;
+}) {
   const t = useTranslations("Dashboard.account.passedCard");
 
   return (
@@ -16,14 +21,18 @@ export function PassedBanner() {
           {t("update")}
         </Badge>
         <h2 className="text-chrome font-display text-2xl font-bold">{t("title")}</h2>
-        <p className="max-w-xl text-sm text-text-muted">{t("desc")}</p>
+        <p className="max-w-xl text-sm text-text-muted">
+          {activation ? t("descPayLater", activation) : t("desc")}
+        </p>
       </div>
       <div className="flex flex-col items-start gap-2 sm:items-end">
         <Button variant="cyan" size="lg" disabled>
-          {t("cta")}
+          {activation ? t("payActivation", { fee: activation.fee }) : t("cta")}
           <ArrowUpRight />
         </Button>
-        <p className="max-w-xs text-xs text-text-muted sm:text-right">{t("ctaSoon")}</p>
+        <p className="max-w-xs text-xs text-text-muted sm:text-right">
+          {activation ? t("payLaterSoon") : t("ctaSoon")}
+        </p>
       </div>
     </section>
   );

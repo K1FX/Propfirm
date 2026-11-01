@@ -1,4 +1,4 @@
-import type { PlanId } from "@/config/plans";
+import type { ProgramType, SizeId } from "@/config/plans";
 
 import type { MockScenario } from "../trading/mock-provider";
 
@@ -12,7 +12,9 @@ export const DEMO_TODAY = "2026-10-30";
 
 export type DemoAccount = {
   id: string;
-  planId: PlanId;
+  programType: ProgramType;
+  size: SizeId;
+  paymentMode: "one_time" | "pay_later";
   phase: "evaluation" | "funded";
   purchasedAt: string;
   scenario: Omit<MockScenario, "startBalance">;
@@ -21,7 +23,9 @@ export type DemoAccount = {
 export const demoAccounts: readonly DemoAccount[] = [
   {
     id: "ACC-50K-1042",
-    planId: "50k",
+    programType: "rush",
+    size: "50k",
+    paymentMode: "one_time",
     phase: "evaluation",
     purchasedAt: "2026-10-19",
     scenario: {
@@ -33,7 +37,9 @@ export const demoAccounts: readonly DemoAccount[] = [
   },
   {
     id: "ACC-150K-2071",
-    planId: "150k",
+    programType: "flex",
+    size: "150k",
+    paymentMode: "one_time",
     phase: "evaluation",
     purchasedAt: "2026-10-21",
     scenario: {
@@ -45,7 +51,9 @@ export const demoAccounts: readonly DemoAccount[] = [
   },
   {
     id: "ACC-100K-3310",
-    planId: "100k",
+    programType: "flex",
+    size: "100k",
+    paymentMode: "one_time",
     phase: "evaluation",
     purchasedAt: "2026-10-12",
     scenario: {
@@ -57,7 +65,9 @@ export const demoAccounts: readonly DemoAccount[] = [
   },
   {
     id: "ACC-50K-0815",
-    planId: "50k",
+    programType: "rush",
+    size: "50k",
+    paymentMode: "one_time",
     phase: "funded",
     purchasedAt: "2026-09-28",
     scenario: {
@@ -69,7 +79,9 @@ export const demoAccounts: readonly DemoAccount[] = [
   },
   {
     id: "ACC-25K-0377",
-    planId: "25k",
+    programType: "rush",
+    size: "25k",
+    paymentMode: "one_time",
     phase: "evaluation",
     purchasedAt: "2026-09-10",
     scenario: {
@@ -77,6 +89,34 @@ export const demoAccounts: readonly DemoAccount[] = [
       dailyPnl: [300, -600, -800],
       endDay: "2026-09-18",
       symbols: ["MNQ", "MES"],
+    },
+  },
+  {
+    id: "ACC-25K-4410",
+    programType: "rush",
+    size: "25k",
+    paymentMode: "pay_later",
+    phase: "evaluation",
+    purchasedAt: "2026-10-22",
+    scenario: {
+      seed: 4410,
+      dailyPnl: [820, 740],
+      endDay: "2026-10-28",
+      symbols: ["MES", "MNQ"],
+    },
+  },
+  {
+    id: "ACC-INS-50K-5120",
+    programType: "instant",
+    size: "50k",
+    paymentMode: "one_time",
+    phase: "funded",
+    purchasedAt: "2026-10-20",
+    scenario: {
+      seed: 5120,
+      dailyPnl: [240, 310, -120, 280],
+      endDay: "2026-10-30",
+      symbols: ["ES", "MES"],
     },
   },
 ];

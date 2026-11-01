@@ -8,9 +8,9 @@ test("landing : hero, barre de confiance et sections clés", async ({ page }) =>
   await expect(page.getByLabel("Chiffres clés")).toContainText("Profit split");
   await expect(page.getByRole("heading", { name: /Votre premier payout/ })).toBeVisible();
   await expect(
-    page.locator("#plans").getByRole("link", { name: "Commencer à trader" }),
+    page.locator("#plans").getByRole("link", { name: /^Commencer avec/ }),
   ).toHaveCount(4);
-  await expect(page.getByText("Recommandé")).toBeVisible();
+  await expect(page.locator("#plans").getByText("Le plus populaire")).toBeVisible();
   await expect(page.getByRole("contentinfo").getByText(/comptes de trading simulés/)).toBeVisible();
 });
 
@@ -25,7 +25,7 @@ test("FAQ en accordéon", async ({ page }) => {
   await page.goto("/fr");
   const q = page.getByText("Comment fonctionne l'évaluation ?");
   await q.click();
-  await expect(page.getByText(/C'est une seule étape, sans limite de temps/)).toBeVisible();
+  await expect(page.getByText(/Rush : une étape, validable dès 1 jour/)).toBeVisible();
 });
 
 test("le bandeau promo se masque", async ({ page }) => {

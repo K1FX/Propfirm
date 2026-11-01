@@ -1,0 +1,267 @@
+{
+  "id": "7888a911-1eb2-4fee-a1ac-c2f704d40f2d",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.trading_accounts": {
+      "name": "trading_accounts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "program_type": {
+          "name": "program_type",
+          "type": "program_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "size": {
+          "name": "size",
+          "type": "account_size",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payment_mode": {
+          "name": "payment_mode",
+          "type": "payment_mode",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'one_time'"
+        },
+        "phase": {
+          "name": "phase",
+          "type": "account_phase",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "account_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "external_id": {
+          "name": "external_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "risk_template": {
+          "name": "risk_template",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_balance": {
+          "name": "start_balance",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rules_snapshot": {
+          "name": "rules_snapshot",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "winning_days_count": {
+          "name": "winning_days_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "activation_fee": {
+          "name": "activation_fee",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "activation_deadline": {
+          "name": "activation_deadline",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "activation_paid_at": {
+          "name": "activation_paid_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "passed_at": {
+          "name": "passed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_payout_at": {
+          "name": "last_payout_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "trading_accounts_user_idx": {
+          "name": "trading_accounts_user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "trading_accounts_user_type_status_idx": {
+          "name": "trading_accounts_user_type_status_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "program_type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "trading_accounts_select_own": {
+          "name": "trading_accounts_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"trading_accounts\".\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "trading_accounts_amounts_positive": {
+          "name": "trading_accounts_amounts_positive",
+          "value": "\"trading_accounts\".\"start_balance\" > 0 AND \"trading_accounts\".\"winning_days_count\" >= 0"
+        },
+        "trading_accounts_instant_rules": {
+          "name": "trading_accounts_instant_rules",
+          "value": "\"trading_accounts\".\"program_type\" <> 'instant' OR (\"trading_accounts\".\"phase\" = 'funded' AND \"trading_accounts\".\"payment_mode\" = 'one_time')"
+        }
+      },
+      "isRLSEnabled": true
+    }
+  },
+  "enums": {
+    "public.account_phase": {
+      "name": "account_phase",
+      "schema": "public",
+      "values": [
+        "evaluation",
+        "funded"
+      ]
+    },
+    "public.account_size": {
+      "name": "account_size",
+      "schema": "public",
+      "values": [
+        "25k",
+        "50k",
+        "100k",
+        "150k"
+      ]
+    },
+    "public.account_status": {
+      "name": "account_status",
+      "schema": "public",
+      "values": [
+        "evaluation",
+        "passed",
+        "passed_awaiting_activation",
+        "expired",
+        "funded",
+        "failed",
+        "breached"
+      ]
+    },
+    "public.payment_mode": {
+      "name": "payment_mode",
+      "schema": "public",
+      "values": [
+        "one_time",
+        "pay_later"
+      ]
+    },
+    "public.program_type": {
+      "name": "program_type",
+      "schema": "public",
+      "values": [
+        "rush",
+        "flex",
+        "instant"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

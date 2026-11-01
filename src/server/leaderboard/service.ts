@@ -1,4 +1,4 @@
-import { plans } from "@/config/plans";
+import { ACCOUNT_SIZE, SIZES } from "@/config/plans";
 import { ranks, type RankId } from "@/config/pass";
 
 import type { LeaderboardEntry } from "./rank";
@@ -78,9 +78,9 @@ export function getLeaderboard(): LeaderboardEntry[] {
   const rand = rng(20261101);
 
   const entries: LeaderboardEntry[] = HANDLES.map((handle, i) => {
-    const plan = plans[Math.floor(rand() * plans.length)]!;
+    const size = SIZES[Math.floor(rand() * SIZES.length)]!;
     // Profit de saison proportionnel à la taille du compte, avec une dispersion réaliste.
-    const sizeFactor = plan.accountSize / 5_000_000;
+    const sizeFactor = ACCOUNT_SIZE[size] / 5_000_000;
     const season = Math.round((40_000 + rand() * 600_000) * sizeFactor) * 1;
     const month = Math.round(season * (0.15 + rand() * 0.45));
     const allTime = Math.round(season * (1.1 + rand() * 1.8));
@@ -89,7 +89,7 @@ export function getLeaderboard(): LeaderboardEntry[] {
       id: `lb-${i}`,
       handle,
       rank: rankForXp(Math.floor(rand() * 9_500)),
-      planId: plan.id,
+      planId: size,
       profit: { season, month, allTime },
       tradingDays: {
         season: seasonDays,

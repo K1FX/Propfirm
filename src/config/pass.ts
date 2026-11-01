@@ -10,14 +10,17 @@ export type Rank = {
   minXp: number;
   /** Réduction sur les challenges, en %. */
   discountPct: number;
+  /** Avantages sur les comptes financés (remplacent les valeurs globales de plans.ts). */
+  payoutEveryWinningDays?: number;
+  profitSplitPct?: number;
 };
 
 export const ranks: readonly Rank[] = [
   { id: "bronze", minXp: 0, discountPct: 0 },
   { id: "silver", minXp: 1_000, discountPct: 10 },
-  { id: "gold", minXp: 2_000, discountPct: 15 },
-  { id: "platinum", minXp: 4_000, discountPct: 15 },
-  { id: "elite", minXp: 8_000, discountPct: 15 },
+  { id: "gold", minXp: 2_000, discountPct: 15, payoutEveryWinningDays: 4 },
+  { id: "platinum", minXp: 4_000, discountPct: 15, payoutEveryWinningDays: 4, profitSplitPct: 95 },
+  { id: "elite", minXp: 8_000, discountPct: 15, payoutEveryWinningDays: 4, profitSplitPct: 100 },
 ];
 
 export type XpSourceId =

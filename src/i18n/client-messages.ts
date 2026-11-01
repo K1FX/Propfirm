@@ -6,7 +6,7 @@ import { getMessages } from "next-intl/server";
  * chaque page n'embarque que ce dont ses composants client ont besoin (poids de page).
  */
 export const CLIENT_NAMESPACES = {
-  site: ["Nav", "LocaleSwitcher", "Promo", "StickyCta"],
+  site: ["Nav", "LocaleSwitcher", "Promo", "StickyCta", "Plans"],
   leaderboard: ["Leaderboard", "Pass"],
   dashboard: ["Nav", "LocaleSwitcher", "Dashboard", "Leaderboard", "Pass"],
 } as const;

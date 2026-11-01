@@ -1,4 +1,4 @@
-import type { PlanId } from "@/config/plans";
+import type { SizeId as PlanId } from "@/config/sizes";
 import type { RankId } from "@/config/pass";
 import type { Cents } from "@/lib/format";
 

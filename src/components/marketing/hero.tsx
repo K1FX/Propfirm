@@ -8,8 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/section";
 import { brand } from "@/config/brand";
 import { activeHeroTitle } from "@/config/hero";
-import { plans } from "@/config/plans";
-import { evaluationRules, fundedRules } from "@/config/rules";
+import { globalRules, MAX_ACCOUNT_SIZE, programs } from "@/config/plans";
 import { buildTrustItems } from "@/config/trust";
 import { formatAccountSize } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -23,11 +22,11 @@ export function Hero() {
   const tTrust = useTranslations("Trust");
   const locale = useLocale();
 
-  const maxSize = formatAccountSize(Math.max(...plans.map((p) => p.accountSize)));
+  const maxSize = formatAccountSize(MAX_ACCOUNT_SIZE);
   const values = {
     size: locale === "fr" ? `${maxSize} $` : `$${maxSize}`,
-    split: fundedRules.profitSplitPct,
-    days: evaluationRules.minTradingDays,
+    split: globalRules.profitSplitPct,
+    days: Math.min(programs.rush.evalMinDays, programs.flex.evalMinDays),
   };
   const hl = (chunks: ReactNode) => (
     <span className="text-cyan drop-shadow-[0_0_18px_rgba(34,211,238,.55)] [-webkit-text-fill-color:currentColor]">

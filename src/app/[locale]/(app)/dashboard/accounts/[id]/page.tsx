@@ -10,7 +10,7 @@ import { formatDay } from "@/components/dashboard/format";
 import { MetricTile } from "@/components/dashboard/metric-tile";
 import { PassedBanner } from "@/components/dashboard/passed-banner";
 import { RulesList } from "@/components/dashboard/rules-list";
-import { StatusBadge } from "@/components/dashboard/status-badge";
+import { ProgramBadge, StatusBadge } from "@/components/dashboard/status-badge";
 import { TradingCalendar } from "@/components/dashboard/trading-calendar";
 import { TradesTable } from "@/components/dashboard/trades-table";
 import { Card } from "@/components/ui/card";
@@ -47,14 +47,15 @@ export default async function AccountPage({
   const fatal = e.violations.find((v) => v.fatal);
   const money = (c: number, signed = false) => formatMoney(c, { locale, signed, showCents: false });
 
-  const targetBalance = account.startBalance + account.plan.profitTarget;
+  const rules = account.rules;
+  const targetBalance = account.startBalance + (rules.profitTarget ?? 0);
   const highWater = Math.max(account.startBalance, ...account.days.map((d) => d.closingBalance));
 
   const chartData = [
     {
       label: formatDay(account.purchasedAt, locale),
       balance: account.startBalance / 100,
-      threshold: (account.startBalance - account.plan.maxDrawdown) / 100,
+      threshold: (account.startBalance - rules.maxDrawdown) / 100,
     },
     ...e.drawdownHistory.map((h) => ({
       label: formatDay(h.day, locale),
@@ -86,14 +87,32 @@ export default async function AccountPage({
         </Link>
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-chrome font-display text-4xl font-bold">
-            {formatAccountSize(account.plan.accountSize)}
+            {formatAccountSize(account.startBalance)}
           </h1>
           <StatusBadge status={account.status} />
+          <ProgramBadge type={account.programType} />
           <span className="tabular text-sm text-text-muted">{account.id}</span>
         </div>
       </div>
 
-      {account.status === "passed" && <PassedBanner />}
+      {(account.status === "passed" || account.status === "passed_awaiting_activation") && (
+        <PassedBanner
+          activation={
+            account.status === "passed_awaiting_activation" && account.activation
+              ? {
+                  fee: money(account.activation.fee),
+                  deadline: formatDay(account.activation.deadline, locale, "long"),
+                }
+              : null
+          }
+        />
+      )}
+      {account.status === "expired" && (
+        <p className="flex items-start gap-2.5 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm">
+          <XCircle className="mt-0.5 size-4 shrink-0 text-danger" aria-hidden />
+          {t("account.expired")}
+        </p>
+      )}
       {fatal && (
         <p className="flex items-start gap-2.5 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm">
           <XCircle className="mt-0.5 size-4 shrink-0 text-danger" aria-hidden />
@@ -132,12 +151,12 @@ export default async function AccountPage({
         {isEval ? (
           <MetricTile
             label={t("account.metrics.target")}
-            value={money(Math.max(0, account.plan.profitTarget - e.profit))}
+            value={money(Math.max(0, (rules.profitTarget ?? 0) - e.profit))}
           />
         ) : (
           <MetricTile
             label={t("account.metrics.withdrawable")}
-            value={money(account.payout?.traderShare ?? 0)}
+            value={money(e.payout?.traderShare ?? 0)}
             tone="cyan"
           />
         )}

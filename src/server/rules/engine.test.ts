@@ -1,30 +1,18 @@
 import { describe, expect, it } from "vitest";
 
 import { evaluateAccount } from "./engine";
-import type { DailyResult, RuleSet } from "./types";
+import { createRulesSnapshot } from "./snapshot";
+import type { DailyResult, RulesSnapshot } from "./types";
 
-// Règles du plan 50K (montants en centimes).
-const rules: RuleSet = {
-  startBalance: 5_000_000,
-  profitTarget: 300_000,
-  maxDrawdown: 200_000,
-  drawdownLockBuffer: 10_000,
-  consistencyMaxBestDayPct: 50,
-  minTradingDays: 2,
-  maxContracts: { mini: 5, micro: 50 },
-  dailyLossLimit: null,
-  alertThresholdPct: 80,
-};
-
-/** Construit des jours à partir d'une liste de P&L (en dollars) – sans creux intraday. */
-function days(pnlsInDollars: number[], start = rules.startBalance): DailyResult[] {
-  let bal = start;
+/** Construit des jours à partir d'une liste de P&L en dollars (sans creux intraday). */
+function days(rules: RulesSnapshot, pnlsInDollars: number[], firstDay = 1): DailyResult[] {
+  let bal = rules.startBalance;
   return pnlsInDollars.map((p, i) => {
     const pnl = p * 100;
     const low = Math.min(bal, bal + pnl);
     bal += pnl;
     return {
-      day: `2026-10-${String(i + 1).padStart(2, "0")}`,
+      day: `2026-10-${String(i + firstDay).padStart(2, "0")}`,
       pnl,
       closingBalance: bal,
       lowBalance: low,
@@ -34,132 +22,204 @@ function days(pnlsInDollars: number[], start = rules.startBalance): DailyResult[
   });
 }
 
-describe("drawdown EOD trailing", () => {
+// ---------------------------------------------------------------------------
+// Mécanique commune : drawdown EOD trailing (RUSH 50K éval : DD 2 000 $, DLL 1 250 $)
+// ---------------------------------------------------------------------------
+describe("drawdown EOD trailing (commun)", () => {
+  const r = createRulesSnapshot("rush", "50k", "evaluation");
+
   it("démarre au solde initial − drawdown max", () => {
-    const r = evaluateAccount(rules, []);
-    expect(r.drawdownThreshold).toBe(4_800_000);
-    expect(r.drawdownRemaining).toBe(200_000);
-    expect(r.status).toBe("active");
+    const e = evaluateAccount(r, []);
+    expect(e.drawdownThreshold).toBe(4_800_000);
+    expect(e.drawdownRemaining).toBe(200_000);
   });
 
-  it("monte avec le plus haut solde de clôture", () => {
-    const r = evaluateAccount(rules, days([500, -200]));
-    // plus haut de clôture = 50 500 $ → seuil 48 500 $
-    expect(r.drawdownThreshold).toBe(4_850_000);
-    expect(r.balance).toBe(5_030_000);
-    expect(r.drawdownRemaining).toBe(180_000);
-  });
-
-  it("ne redescend jamais après une perte", () => {
-    const r = evaluateAccount(rules, days([1_000, -800, -100]));
-    expect(r.drawdownThreshold).toBe(4_900_000);
+  it("monte avec le plus haut solde de clôture et ne redescend jamais", () => {
+    expect(evaluateAccount(r, days(r, [500, -200])).drawdownThreshold).toBe(4_850_000);
+    expect(evaluateAccount(r, days(r, [1_000, -800, -100])).drawdownThreshold).toBe(4_900_000);
   });
 
   it("se bloque au solde initial + 100 $", () => {
-    const r = evaluateAccount(rules, days([1_500, 800]));
-    // plus haut = 52 300 $ → 50 300 $ dépasserait le lock de 50 100 $
-    expect(r.drawdownThreshold).toBe(5_010_000);
-    expect(r.drawdownLocked).toBe(true);
-    const later = evaluateAccount(rules, days([1_500, 800, 1_000]));
-    expect(later.drawdownThreshold).toBe(5_010_000);
+    const e = evaluateAccount(r, days(r, [1_100, 900, 700]));
+    expect(e.drawdownThreshold).toBe(5_010_000);
+    expect(e.drawdownLocked).toBe(true);
   });
 
-  it("élimine le compte si le solde touche le seuil", () => {
-    const r = evaluateAccount(rules, days([-1_000, -1_000]));
-    expect(r.status).toBe("breached");
-    expect(r.violations).toContainEqual({ type: "drawdown", day: "2026-10-02", fatal: true });
-    expect(r.drawdownRemaining).toBe(0);
+  it("élimine si le solde touche le seuil, y compris en intraday", () => {
+    expect(evaluateAccount(r, days(r, [-1_000, -1_000])).status).toBe("breached");
+    const d = days(r, [200]);
+    d[0]!.lowBalance = 4_799_000;
+    expect(evaluateAccount(r, d).status).toBe("breached");
   });
 
-  it("détecte une violation intraday même si la clôture remonte", () => {
-    const d = days([200]);
-    d[0]!.lowBalance = 4_799_000; // creux sous le seuil de 48 000 $
-    expect(evaluateAccount(rules, d).status).toBe("breached");
+  it("utilise le seuil de la veille pendant la journée", () => {
+    const d = days(r, [1_000, 500]);
+    d[1]!.lowBalance = 4_950_000; // au-dessus du seuil de la veille (49 000 $)
+    expect(evaluateAccount(r, d).status).not.toBe("breached");
   });
 
-  it("utilise le seuil de la veille pendant la journée (pas celui du jour)", () => {
-    // Jour 1 : +1 000 → seuil 49 000 $. Jour 2 : creux à 49 500 puis clôture 51 500 : pas de violation.
-    const d = days([1_000, 500]);
-    d[1]!.lowBalance = 4_950_000;
-    expect(evaluateAccount(rules, d).status).not.toBe("breached");
-  });
-
-  it("ignore les jours après l'élimination", () => {
-    const r = evaluateAccount(rules, days([-2_000, 5_000]));
-    expect(r.status).toBe("breached");
-    expect(r.drawdownHistory).toHaveLength(1);
-  });
-});
-
-describe("validation de l'évaluation", () => {
-  it("valide avec objectif + jours min + consistance", () => {
-    const r = evaluateAccount(rules, days([1_000, 1_000, 1_000]));
-    expect(r.profit).toBe(300_000);
-    expect(r.targetProgressPct).toBe(100);
-    expect(r.status).toBe("passed");
-  });
-
-  it("refuse si le minimum de jours n'est pas atteint", () => {
-    const r = evaluateAccount(rules, days([3_000]));
-    expect(r.minDaysMet).toBe(false);
-    expect(r.status).not.toBe("passed");
-  });
-
-  it("refuse si le meilleur jour dépasse 50 % du profit (consistance)", () => {
-    const r = evaluateAccount(rules, days([2_000, 1_000]));
-    expect(r.bestDayShareOfProfitPct).toBeCloseTo(66.67, 1);
-    expect(r.consistencyOk).toBe(false);
-    expect(r.status).toBe("active");
-  });
-
-  it("accepte exactement 50 %", () => {
-    const r = evaluateAccount(rules, days([1_500, 1_500]));
-    expect(r.consistencyOk).toBe(true);
-    expect(r.status).toBe("passed");
-  });
-
-  it("un compte financé n'a pas d'objectif", () => {
-    const r = evaluateAccount({ ...rules, profitTarget: null }, days([5_000, 1_000]));
-    expect(r.status).toBe("active");
-    expect(r.targetProgressPct).toBe(0);
-  });
-});
-
-describe("autres règles", () => {
   it("signale un dépassement de contrats sans éliminer", () => {
-    const d = days([100, 100]);
-    d[1]!.maxMiniContracts = 6;
-    const r = evaluateAccount(rules, d);
-    expect(r.violations).toContainEqual({ type: "maxContracts", day: "2026-10-02", fatal: false });
-    expect(r.status).toBe("active");
+    const d = days(r, [100]);
+    d[0]!.maxMiniContracts = 5; // max 4 mini en RUSH 50K
+    const e = evaluateAccount(r, d);
+    expect(e.violations).toContainEqual({ type: "maxContracts", day: "2026-10-01", fatal: false });
+    expect(e.status).toBe("active");
   });
 
-  it("élimine sur la limite de perte journalière quand elle est activée", () => {
-    const r = evaluateAccount({ ...rules, dailyLossLimit: 100_000 }, days([-1_000]));
-    expect(r.status).toBe("breached");
-    expect(r.violations[0]?.type).toBe("dailyLoss");
-  });
-
-  it("compte les jours gagnants avec un seuil", () => {
-    const r = evaluateAccount(rules, days([50, 150, 100, -20]), { winningDayMin: 10_000 });
-    expect(r.winningDays).toBe(2);
+  it("alerte à 80 % du drawdown consommé", () => {
+    const e = evaluateAccount(r, days(r, [-1_200, -450]));
+    expect(e.alerts.map((a) => a.type)).toContain("drawdown");
   });
 });
 
-describe("alertes à 80 %", () => {
-  it("alerte quand 80 % du drawdown est consommé", () => {
-    const r = evaluateAccount(rules, days([-1_650]));
-    expect(r.drawdownUsedPct).toBeCloseTo(82.5);
-    expect(r.alerts).toContainEqual({ type: "drawdown", usedPct: 82.5 });
+// ---------------------------------------------------------------------------
+// RUSH × évaluation : 1 jour min, pas de consistance, perte journalière soft
+// ---------------------------------------------------------------------------
+describe("RUSH – évaluation", () => {
+  const r = createRulesSnapshot("rush", "50k", "evaluation");
+
+  it("peut valider en 1 seul jour (pas de consistance)", () => {
+    expect(evaluateAccount(r, days(r, [3_000])).status).toBe("passed");
   });
 
-  it("pas d'alerte sous le seuil", () => {
-    expect(evaluateAccount(rules, days([-1_000])).alerts).toEqual([]);
+  it("perte journalière soft : journée bloquée, compte conservé", () => {
+    const e = evaluateAccount(r, days(r, [-1_300, 400]));
+    expect(e.status).toBe("active");
+    expect(e.dailyLossLockedDays).toEqual(["2026-10-01"]);
+    expect(e.violations).toContainEqual({ type: "dailyLoss", day: "2026-10-01", fatal: false });
   });
 
-  it("alerte de consistance quand le meilleur jour approche de la limite", () => {
-    // profit 2 000, meilleur jour 900 → 45 % / 50 % = 90 % de la limite
-    const r = evaluateAccount(rules, days([900, 600, 500]));
-    expect(r.alerts.map((a) => a.type)).toContain("consistency");
+  it("n'a pas de payout en évaluation", () => {
+    expect(evaluateAccount(r, days(r, [500])).payout).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// RUSH × financé : consistance 35 % du cycle, perte journalière soft, plafond
+// ---------------------------------------------------------------------------
+describe("RUSH – financé", () => {
+  const r = createRulesSnapshot("rush", "50k", "funded");
+
+  it("payout après 5 jours gagnants (≥ 150 $), plafonné à 2 000 $, split 90 %", () => {
+    const e = evaluateAccount(r, days(r, [600, 700, 500, 650, 550, 200]));
+    expect(e.winningDays).toBe(6);
+    expect(e.payout).toMatchObject({ eligible: true, payable: 200_000, traderShare: 180_000 });
+  });
+
+  it("un jour à +149 $ n'est pas un jour gagnant", () => {
+    const e = evaluateAccount(r, days(r, [149, 300, 300, 300, 300]));
+    expect(e.winningDays).toBe(4);
+    expect(e.payout?.eligible).toBe(false);
+  });
+
+  it("consistance 35 % : un gros jour bloque le payout", () => {
+    const e = evaluateAccount(r, days(r, [1_500, 200, 200, 200, 200]));
+    expect(e.consistencyOk).toBe(false);
+    expect(e.payout?.eligible).toBe(false);
+  });
+
+  it("le compteur repart à zéro après un payout", () => {
+    const d = days(r, [300, 300, 300, 300, 300, 400, 400]);
+    const e = evaluateAccount(r, d, { lastPayoutDay: "2026-10-05" });
+    expect(e.winningDays).toBe(2);
+    expect(e.payout?.eligible).toBe(false);
+  });
+
+  it("garde la perte journalière soft", () => {
+    expect(evaluateAccount(r, days(r, [-1_300])).dailyLossLockedDays).toHaveLength(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FLEX × évaluation : 3 jours min, consistance 40 %, pas de limite journalière
+// ---------------------------------------------------------------------------
+describe("FLEX – évaluation", () => {
+  const r = createRulesSnapshot("flex", "50k", "evaluation");
+
+  it("exige 3 jours de trading", () => {
+    expect(evaluateAccount(r, days(r, [1_500, 1_500])).status).toBe("active");
+    expect(evaluateAccount(r, days(r, [1_000, 1_000, 1_000])).status).toBe("passed");
+  });
+
+  it("consistance 40 % au moment de valider", () => {
+    const e = evaluateAccount(r, days(r, [1_500, 800, 700]));
+    expect(e.bestDayShareOfProfitPct).toBe(50);
+    expect(e.status).toBe("active");
+  });
+
+  it("aucune limite journalière", () => {
+    const e = evaluateAccount(r, days(r, [-1_900]));
+    expect(e.dailyLossLockedDays).toEqual([]);
+    expect(e.status).toBe("active");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FLEX × financé : ni consistance, ni limite journalière
+// ---------------------------------------------------------------------------
+describe("FLEX – financé", () => {
+  const r = createRulesSnapshot("flex", "50k", "funded");
+
+  it("payout possible même avec un très gros jour (pas de consistance)", () => {
+    const e = evaluateAccount(r, days(r, [1_800, 200, 200, 200, 200]));
+    expect(e.consistencyOk).toBe(true);
+    expect(e.payout?.eligible).toBe(true);
+  });
+
+  it("aucune limite journalière", () => {
+    expect(evaluateAccount(r, days(r, [-1_900])).dailyLossLockedDays).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// INSTANT × financé : consistance 20 %, perte journalière soft selon la taille
+// ---------------------------------------------------------------------------
+describe("INSTANT – financé", () => {
+  it("n'a pas de phase d'évaluation", () => {
+    expect(() => createRulesSnapshot("instant", "50k", "evaluation")).toThrow();
+  });
+
+  const r = createRulesSnapshot("instant", "50k", "funded");
+
+  it("consistance 20 % du cycle", () => {
+    const ok = evaluateAccount(r, days(r, [300, 300, 300, 300, 300]));
+    expect(ok.payout?.eligible).toBe(true);
+    const ko = evaluateAccount(r, days(r, [600, 300, 300, 300, 300]));
+    expect(ko.consistencyOk).toBe(false);
+  });
+
+  it("25K sans limite journalière, 50K avec limite soft à 1 250 $", () => {
+    const small = createRulesSnapshot("instant", "25k", "funded");
+    expect(evaluateAccount(small, days(small, [-900])).dailyLossLockedDays).toEqual([]);
+    expect(evaluateAccount(r, days(r, [-1_300])).dailyLossLockedDays).toHaveLength(1);
+  });
+
+  it("refuse un payout sous le minimum de 250 $", () => {
+    const e = evaluateAccount(
+      r,
+      days(r, [160, 160, 160, 160, 160]).map((d, i) => ({ ...d, pnl: i === 0 ? 15_000 : 5_000 })),
+    );
+    expect(e.payout?.eligible).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Avantages de rang et figeage des règles
+// ---------------------------------------------------------------------------
+describe("snapshot des règles", () => {
+  it("Gold : payout tous les 4 jours gagnants ; Elite : split 100 %", () => {
+    expect(createRulesSnapshot("rush", "50k", "funded", "gold").payoutEveryWinningDays).toBe(4);
+    expect(createRulesSnapshot("rush", "50k", "funded", "elite").profitSplitPct).toBe(100);
+    expect(createRulesSnapshot("rush", "50k", "funded", "bronze").profitSplitPct).toBe(90);
+  });
+
+  it("les avantages de rang ne s'appliquent pas à l'évaluation", () => {
+    expect(createRulesSnapshot("rush", "50k", "evaluation", "elite").payoutEveryWinningDays).toBe(
+      5,
+    );
+  });
+
+  it("contient le gabarit de risque du fournisseur", () => {
+    expect(createRulesSnapshot("flex", "100k", "evaluation").riskTemplate).toBe("FLEX_100K_EVAL");
   });
 });

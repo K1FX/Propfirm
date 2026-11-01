@@ -52,7 +52,7 @@
         "line2": "Get funded. Get paid."
       }
     },
-    "subtitle": "One-step evaluation. No activation fee. The only futures prop firm that rewards your discipline with XP, ranks and real perks.",
+    "subtitle": "One-step evaluation or instant funding. No activation fee with one-time payment. The only futures prop firm that rewards your discipline with XP, ranks and real perks.",
     "ctaPrimary": "Start Trading Now",
     "ctaHint": "Pick your plan in 30 seconds",
     "ctaDiscord": "Join the Discord",
@@ -74,7 +74,7 @@
   "Challenges": {
     "eyebrow": "Challenges",
     "title": "Choose your account size",
-    "subtitle": "1-step evaluation, no time limit. One-time payment, no subscription.",
+    "subtitle": "Three ways to get funded. One-time payment or Pay Later, no subscription.",
     "recommended": "Recommended",
     "account": "Account",
     "oneTime": "one-time fee",
@@ -114,7 +114,7 @@
       },
       "gold": {
         "name": "Gold",
-        "reward": "Weekly payouts, 15% off"
+        "reward": "Payouts every 4 winning days, 15% off"
       },
       "platinum": {
         "name": "Platinum",
@@ -222,7 +222,9 @@
       "passed": "Passed",
       "funded": "Funded",
       "failed": "Failed",
-      "breached": "Breached"
+      "breached": "Breached",
+      "passed_awaiting_activation": "Activation required",
+      "expired": "Expired"
     },
     "account": {
       "balance": "Balance",
@@ -247,7 +249,7 @@
       "minDaysValue": "{count} / {min}",
       "consistency": "Consistency rule",
       "consistencyValue": "Best day: {pct}% of profit (max {max}%)",
-      "consistencyNA": "Applies once profit is positive",
+      "consistencyNA": "Max {max}% — applies once profit is positive",
       "contracts": "Max contracts",
       "contractsValue": "{mini} mini / {micro} micro",
       "winningDays": "Winning days (≥ {min})",
@@ -299,8 +301,16 @@
         "title": "Evaluation passed",
         "desc": "Target reached while following every rule. Your funded account is ready to activate, free of charge.",
         "cta": "Go Funded",
-        "ctaSoon": "Activation available with identity verification (KYC)."
-      }
+        "ctaSoon": "Activation available with identity verification (KYC).",
+        "payActivation": "Pay activation ({fee})",
+        "descPayLater": "Target reached! Pay your {fee} activation fee before {deadline} to get your funded account.",
+        "payLaterSoon": "Activation payment will be available with checkout."
+      },
+      "dailyLoss": "Daily loss limit",
+      "dailyLossValue": "{amount} (soft: day paused)",
+      "none": "None",
+      "consistencyFunded": "Consistency (payout cycle)",
+      "expired": "Activation deadline passed: this account has expired. Buy a new evaluation to start again."
     },
     "table": {
       "date": "Date",
@@ -328,18 +338,19 @@
       "title": "Payouts",
       "subtitle": "Request your share of the profits on your funded accounts.",
       "available": "Your available share",
-      "gross": "Gross profit",
-      "split": "100% up to {threshold}, then {pct}%",
+      "split": "{pct}% split",
       "winningDays": "Winning days",
       "eligible": "Eligible",
       "notEligible": "Not eligible yet",
       "request": "Request a payout",
       "requestSoon": "Payout requests open with identity verification (KYC).",
-      "frequency": "Every 2 weeks · weekly from Gold rank",
+      "frequency": "Every {days} winning days (≥ {min})",
       "min": "Minimum: {amount}",
       "history": "Payout history",
       "noHistory": "No payouts yet.",
-      "noFunded": "You don't have a funded account yet. Pass an evaluation to unlock payouts."
+      "noFunded": "You don't have a funded account yet. Pass an evaluation to unlock payouts.",
+      "cycleProfit": "Cycle profit",
+      "cap": "Max per payout: {amount}"
     },
     "pass": {
       "subtitle": "Earn XP through discipline, rank up and claim your rewards.",
@@ -382,6 +393,11 @@
     "comingSoon": {
       "title": "Coming soon",
       "desc": "This section is coming in a later phase."
+    },
+    "program": {
+      "rush": "Rush",
+      "flex": "Flex",
+      "instant": "Instant"
     }
   },
   "Leaderboard": {
@@ -429,7 +445,7 @@
     "label": "Key figures",
     "maxSize": "Max account size",
     "split": "Profit split",
-    "activation": "Activation fee",
+    "activation": "Activation fee (one-time)",
     "payoutTarget": "Payout processing target",
     "totalPaidOut": "Total paid out",
     "tradersPaid": "Traders paid",
@@ -447,11 +463,11 @@
       "one": {
         "pill": "Today",
         "title": "1. Choose your account",
-        "desc": "Pick your plan and start your evaluation instantly. No activation fee, no time limit.",
+        "desc": "Pick Rush, Flex or Instant and start instantly. No activation fee with one-time payment, no time limit.",
         "widget": "Account ready"
       },
       "two": {
-        "pill": "Next {min}+ days",
+        "pill": "From {min} day",
         "title": "2. Trade with our capital",
         "desc": "Access up to {size}. Hit your profit target while respecting simple, transparent rules.",
         "widget": "Evaluation P&L"
@@ -459,7 +475,7 @@
       "three": {
         "pill": "In as little as {days} days",
         "title": "3. Get paid",
-        "desc": "Request a payout and keep up to 100% of your first {threshold}, then {split}%. Weekly payouts from Gold rank.",
+        "desc": "Request a payout every {days} winning days and keep {split}% of your profits. Faster from Gold rank.",
         "widget": "Payouts",
         "day": "Day {n}"
       }
@@ -468,17 +484,74 @@
   "Plans": {
     "tabs": {
       "label": "Account type",
-      "evaluation": "Evaluation",
-      "instantFunding": "Instant Funding"
+      "rush": {
+        "name": "Rush",
+        "label": "Pass in 1 day",
+        "sub": "Quick evaluation, no consistency rule"
+      },
+      "flex": {
+        "name": "Flex",
+        "label": "Pass in 3 days",
+        "sub": "No consistency rule once funded"
+      },
+      "instant": {
+        "name": "Instant",
+        "label": "Instant funding",
+        "sub": "No evaluation, funded today"
+      }
     },
-    "cta": "Start Trading Now",
-    "save": "Save {pct}%",
-    "promoApplied": "with code {code}",
+    "modes": {
+      "label": "Payment mode",
+      "one_time": "One-time payment",
+      "pay_later": "Pay Later"
+    },
+    "payLaterHint": "Pay a reduced price today, and an activation fee only if you pass.",
+    "popular": "Most popular",
+    "titleEval": "{size} Evaluation",
+    "titleFunded": "{size} Funded",
+    "oneTime": "one-time payment",
+    "payLaterPrice": "today + {activation} after you pass",
+    "none": "None",
+    "contractsValue": "{mini} mini / {micro} micro",
+    "rows": {
+      "target": "Profit target",
+      "drawdown": "Trailing max drawdown (EOD)",
+      "drawdownFunded": "Max drawdown (EOD)",
+      "dailyLoss": "Daily loss limit",
+      "consistency": "Consistency",
+      "minDays": "Min. trading days",
+      "reset": "Reset fee",
+      "activation": "Activation fee",
+      "contracts": "Max contracts",
+      "maxAccounts": "Max accounts"
+    },
+    "tips": {
+      "dailyLoss": "If your loss for the day reaches this limit, trading is paused until the next session. Your account is NOT lost.",
+      "consistencyEval": "Your best day must not exceed this share of your total profit when you pass.",
+      "consistencyFunded": "Your best day must not exceed this share of your profit for the current payout cycle.",
+      "winningDay": "A session (5:00 PM–4:00 PM Chicago time) closed with at least {amount} of profit."
+    },
+    "viewFunded": "View funded rules",
+    "ctaEval": "Start with {size}",
+    "ctaInstant": "Get funded with {size}",
+    "save": "Save {amount} with code {code}",
+    "payLaterNoPromo": "Not combinable with promo codes",
     "secure": "Secure checkout",
     "card": "Card",
     "crypto": "Crypto",
-    "accepted": "accepted",
-    "instant": "Instant account delivery"
+    "instant": "Instant account delivery",
+    "funded": {
+      "title": "{type} {size} – Funded account rules",
+      "close": "Close",
+      "payoutFrequency": "Payout frequency",
+      "payoutFrequencyValue": "Every {days} winning days",
+      "winningDay": "Winning day",
+      "winningDayValue": "Session closed at +{amount} or more",
+      "payoutCap": "Max per payout",
+      "payoutMin": "Min. payout",
+      "split": "Profit split",
+      "note": "The winning-day counter resets after each payout. Higher Pass ranks unlock faster payouts and a better split."
+    }
   },
   "WhyUs": {
     "eyebrow": "Why Aurum",
@@ -486,7 +559,7 @@
     "items": {
       "activation": {
         "title": "No activation fee",
-        "desc": "Pass your evaluation and your funded account is activated for {fee}. No hidden costs."
+        "desc": "With one-time payment, your funded account is activated for {fee}. No hidden costs."
       },
       "eod": {
         "title": "EOD trailing drawdown",
@@ -494,7 +567,7 @@
       },
       "payouts": {
         "title": "Regular payouts",
-        "desc": "Request a payout every {days} days after {winning} winning days. Weekly payouts from Gold rank."
+        "desc": "Request a payout every {winning} winning days (sessions closed at {min} or more). Faster from Gold rank."
       },
       "pass": {
         "title": "Level up with the Pass",
@@ -519,7 +592,7 @@
     "items": {
       "evaluation": {
         "q": "How does the evaluation work?",
-        "a": "It's a single step with no time limit. Reach the profit target without hitting the drawdown, trade at least {minDays} days, and make sure your best day is no more than {consistency}% of your total profit."
+        "a": "Rush: one step, pass in as little as {rushDays} day, no consistency rule. Flex: one step, at least {flexDays} days, and your best day can't exceed {flexConsistency}% of total profit. Instant: no evaluation, you're funded right away. No time limit."
       },
       "drawdown": {
         "q": "What is an EOD trailing drawdown?",
@@ -527,11 +600,11 @@
       },
       "payouts": {
         "q": "When can I request a payout?",
-        "a": "After {winning} winning days (days of at least {winningMin}) on a funded account, with a minimum of {minPayout}. Payouts are every {days} days, weekly from Gold rank."
+        "a": "Every {winning} winning days (sessions closed at {winningMin} or more), with a {minPayout} minimum. Each payout is capped from {capMin} (25K) to {capMax} (150K). The counter resets after each payout."
       },
       "split": {
         "q": "What profit split do I get?",
-        "a": "You keep 100% of your first {threshold} of profit, then {split}%. Higher Pass ranks unlock a better split."
+        "a": "You keep {split}% of your profits. Higher Pass ranks unlock a better split."
       },
       "real": {
         "q": "Am I trading real money?",
@@ -548,6 +621,14 @@
       "countries": {
         "q": "Which countries are accepted?",
         "a": "[To be completed] The list of accepted countries will be published before launch."
+      },
+      "payLater": {
+        "q": "How does Pay Later work?",
+        "a": "With Pay Later (Rush and Flex), you pay a reduced price today and an activation fee only if you pass. You have {deadline} days to pay it. Not combinable with promo codes."
+      },
+      "instant": {
+        "q": "How many Instant accounts can I have?",
+        "a": "Up to {maxInstant} active Instant accounts at a time. A lost Instant account can't be reset: you need to buy a new one."
       }
     }
   },

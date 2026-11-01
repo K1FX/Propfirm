@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
 import { Section, SectionHeading } from "@/components/ui/section";
-import { evaluationRules, fundedRules } from "@/config/rules";
+import { globalRules } from "@/config/plans";
 import { formatMoney } from "@/lib/format";
 
 export function WhyUs() {
@@ -13,12 +13,15 @@ export function WhyUs() {
   const money = (c: number) => formatMoney(c, { locale });
 
   const items = [
-    { key: "activation", icon: BadgeDollarSign, values: { fee: money(fundedRules.activationFee) } },
-    { key: "eod", icon: TrendingUp, values: { lock: money(evaluationRules.drawdownLockBuffer) } },
+    { key: "activation", icon: BadgeDollarSign, values: { fee: money(0) } },
+    { key: "eod", icon: TrendingUp, values: { lock: money(globalRules.drawdownLockBuffer) } },
     {
       key: "payouts",
       icon: CalendarClock,
-      values: { days: fundedRules.payoutFrequencyDays, winning: fundedRules.payoutMinWinningDays },
+      values: {
+        winning: globalRules.payoutEveryWinningDays,
+        min: money(globalRules.winningDayMin),
+      },
     },
     { key: "pass", icon: Trophy, values: {} },
   ] as const;
