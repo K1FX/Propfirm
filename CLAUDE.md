@@ -215,9 +215,12 @@ Les performances passées ne préjugent pas des performances futures. » Textes 
 
 ## Avancement
 - [x] Phase 0 – Setup (Next.js 16.4, Tailwind 4, next-intl fr/en, Drizzle + Supabase prêts, Vitest + Playwright, structure §10)
-- [ ] Phase 1 – Design system + page d'accueil
+- [x] Phase 1 – Design system (`components/ui` : Button/ButtonLink, Card, Badge, ProgressBar, AccountCard, Section, Reveal, Logo), page d'accueil §3.5, `/styleguide`, pages « en construction » via `(marketing)/[slug]`. Config remplie en avance : `plans.ts`, `rules.ts`, `pass.ts` (rangs/XP), `promo.ts` (code PLACEHOLDER).
+- [ ] Phase 2 – Pages publiques
 
 Notes techniques :
 - Next.js 16 : avant de coder, lire les guides dans `node_modules/next/dist/docs/` (voir AGENTS.md). Le middleware s'appelle `src/proxy.ts`. `cacheComponents` est activé.
 - Le registre shadcn (ui.shadcn.com) peut être bloqué dans l'environnement cloud : écrire les composants à la main si besoin.
+- Ne jamais mettre `position: fixed` à l'intérieur d'un élément avec `backdrop-filter` (le header) : le fixed devient relatif à ce parent.
+- Français : espace insécable (U+00A0) avant `%` dans messages/fr.json.
 - Langue : utiliser `toLocale()` (`src/i18n/routing.ts`) pour valider le paramètre `[locale]`.

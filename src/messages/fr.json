@@ -2,26 +2,192 @@
   "Metadata": {
     "description": "Prop firm spécialisée dans les futures CME. Évaluation en 1 étape, compte financé simulé, progression avec le {passName}."
   },
-  "Home": {
-    "badge": "Prop firm futures · Marchés CME",
-    "title": "Tradez les futures avec notre capital simulé",
-    "subtitle": "Site en construction – Phase 0 : fondations techniques en place.",
-    "dashboard": "Espace trader",
-    "admin": "Back-office"
+  "Nav": {
+    "challenges": "Challenges",
+    "rules": "Règles",
+    "pass": "{passName}",
+    "payouts": "Payouts",
+    "faq": "FAQ",
+    "login": "Connexion",
+    "start": "Commencer",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "main": "Navigation principale",
+    "dashboard": "Espace trader"
   },
-  "Placeholder": {
-    "dashboard": "Espace trader – à venir (Phase 5)",
-    "admin": "Back-office – à venir (Phase 8)",
-    "back": "Retour à l'accueil"
+  "Promo": {
+    "text": "-{discount} % sur toutes les évaluations avec le code",
+    "copy": "Copier le code",
+    "copied": "Copié"
+  },
+  "LocaleSwitcher": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "English"
+  },
+  "Hero": {
+    "badge": "Prop firm futures · Marchés CME",
+    "title": "Tradez les futures. Gardez jusqu'à 100 % des profits.",
+    "subtitle": "Une seule étape d'évaluation, sans limite de temps, avec un drawdown calculé en fin de journée. Progressez avec le {passName} et débloquez de meilleures conditions.",
+    "ctaPrimary": "Choisir mon challenge",
+    "ctaSecondary": "Découvrir le {passName}",
+    "stats": {
+      "split": "de split max.",
+      "splitValue": "{pct} %",
+      "activation": "frais d'activation",
+      "steps": "étape d'évaluation"
+    },
+    "cardEval": "Évaluation",
+    "cardFunded": "Financé",
+    "cardFooter": "Compte simulé"
+  },
+  "Contracts": {
+    "label": "Contrats tradables",
+    "ES": "E-mini S&P 500",
+    "NQ": "E-mini Nasdaq-100",
+    "YM": "E-mini Dow",
+    "RTY": "E-mini Russell 2000",
+    "CL": "Pétrole brut",
+    "GC": "Or",
+    "MES": "Micro E-mini S&P 500",
+    "MNQ": "Micro E-mini Nasdaq-100"
+  },
+  "Challenges": {
+    "eyebrow": "Challenges",
+    "title": "Choisissez votre taille de compte",
+    "subtitle": "Évaluation en 1 étape, sans limite de temps. Paiement unique, aucun abonnement.",
+    "recommended": "Recommandé",
+    "account": "Compte",
+    "oneTime": "paiement unique",
+    "target": "Objectif de profit",
+    "drawdown": "Drawdown EOD trailing",
+    "contracts": "Contrats max",
+    "contractsValue": "{mini} mini / {micro} micro",
+    "minDays": "Jours de trading min.",
+    "dailyLoss": "Perte journalière max.",
+    "none": "Aucune",
+    "timeLimit": "Limite de temps",
+    "unlimited": "Illimitée",
+    "cta": "Commencer le {size}",
+    "compare": "Voir le détail des règles"
+  },
+  "Pass": {
+    "eyebrow": "{passName}",
+    "title": "La discipline, enfin récompensée",
+    "subtitle": "Gagnez de l'XP en respectant vos règles, montez en rang et débloquez des réductions, des payouts plus rapides et un meilleur split. Jamais d'XP pour le volume ou la prise de risque.",
+    "example": "Exemple",
+    "currentRank": "Rang actuel",
+    "xpLabel": "XP totale",
+    "toNext": "{xp} XP avant {rank}",
+    "maxRank": "Rang maximum atteint",
+    "ranksTitle": "5 rangs permanents",
+    "sourcesTitle": "Comment gagner de l'XP",
+    "season": "Saisons de 3 mois · piste de 30 paliers gratuite + Premium",
+    "cta": "En savoir plus sur le {passName}",
+    "ranks": {
+      "bronze": {
+        "name": "Bronze",
+        "reward": "Badge profil, accès au Discord privé"
+      },
+      "silver": {
+        "name": "Silver",
+        "reward": "-10 % sur tous les challenges"
+      },
+      "gold": {
+        "name": "Gold",
+        "reward": "Payouts hebdomadaires, -15 %"
+      },
+      "platinum": {
+        "name": "Platinum",
+        "reward": "1 reset gratuit / mois, split 95 %"
+      },
+      "elite": {
+        "name": "Elite",
+        "reward": "Compte 50K offert, split 100 %, manager dédié"
+      }
+    },
+    "sources": {
+      "disciplinedDay": "Jour de trading sans violation",
+      "dailyMission": "Mission quotidienne",
+      "weeklyMission": "Mission hebdomadaire",
+      "evaluationPassed": "Évaluation validée",
+      "payout": "Payout encaissé",
+      "referral": "Parrainage d'un trader qui achète",
+      "streak": "Série de 5 jours disciplinés"
+    }
+  },
+  "Steps": {
+    "eyebrow": "Comment ça marche",
+    "title": "Financé en 3 étapes",
+    "items": {
+      "one": {
+        "title": "Choisissez votre challenge",
+        "desc": "De 25K à 150K. Paiement unique, accès immédiat à votre compte d'évaluation simulé."
+      },
+      "two": {
+        "title": "Atteignez l'objectif",
+        "desc": "Respectez le drawdown et la règle de consistance, en 2 jours de trading minimum. Sans limite de temps."
+      },
+      "three": {
+        "title": "Encaissez vos payouts",
+        "desc": "Activation gratuite du compte financé. Jusqu'à 100 % sur les premiers {threshold}, puis {split} %."
+      }
+    },
+    "cta": "Commencer maintenant"
+  },
+  "Footer": {
+    "tagline": "Prop firm spécialisée dans les futures CME.",
+    "product": "Produit",
+    "company": "Entreprise",
+    "legal": "Légal",
+    "affiliate": "Affiliation",
+    "blog": "Blog",
+    "contact": "Contact",
+    "terms": "CGV",
+    "privacy": "Confidentialité",
+    "notice": "Mentions légales",
+    "risk": "Avertissement sur les risques",
+    "rights": "© {year} {brand}. Tous droits réservés."
   },
   "Legal": {
     "disclaimer": "Tous les comptes fournis sont des comptes de trading simulés. {brand} n'est pas un courtier et ne reçoit aucun dépôt de clients. Les performances passées ne préjugent pas des performances futures."
   },
+  "Placeholder": {
+    "comingSoon": "Page en construction",
+    "dashboard": "Espace trader – à venir",
+    "admin": "Back-office – à venir",
+    "back": "Retour à l'accueil"
+  },
+  "Pages": {
+    "challenges": "Challenges",
+    "rules": "Règles",
+    "pass": "{passName}",
+    "payouts": "Payouts",
+    "faq": "FAQ",
+    "login": "Connexion",
+    "affiliate": "Affiliation",
+    "blog": "Blog",
+    "terms": "CGV",
+    "privacy": "Confidentialité",
+    "notice": "Mentions légales",
+    "risk": "Avertissement sur les risques"
+  },
+  "Styleguide": {
+    "title": "Design system",
+    "subtitle": "Tous les composants de l'interface, au même endroit.",
+    "colors": "Couleurs",
+    "ranks": "Rangs",
+    "typography": "Typographie",
+    "buttons": "Boutons",
+    "badges": "Badges",
+    "cards": "Cartes",
+    "progress": "Barres de progression",
+    "accounts": "Cartes de compte",
+    "sample": "Exemple de carte",
+    "sampleDesc": "Texte secondaire d'une carte, en text-muted."
+  },
   "NotFound": {
     "title": "Page introuvable",
     "back": "Retour à l'accueil"
-  },
-  "LocaleSwitcher": {
-    "label": "Langue"
   }
 }

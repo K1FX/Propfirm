@@ -137,3 +137,67 @@
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }
+
+/* ---------- Effets signature (CLAUDE.md §3.2) ---------- */
+
+@utility bg-chrome {
+  background: linear-gradient(180deg, #f6f8fa 0%, #c9ced6 55%, #9da4ae 100%);
+  color: #0b0d10;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 0 1px #3a3f47,
+    0 10px 30px rgba(34, 211, 238, 0.18);
+}
+
+@utility bg-brushed {
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.16) 45%,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    repeating-linear-gradient(90deg, #2b2f36 0 2px, #23262c 2px 4px);
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(38, 42, 49, 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(38, 42, 49, 0.45) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility border-chrome {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(180deg, #ffffff 0%, #8c939d 50%, #3a3f47 100%) border-box;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
