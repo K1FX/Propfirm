@@ -257,7 +257,48 @@
       "pending": "In progress",
       "ko": "Not met",
       "warning": "Warning",
-      "noTarget": "No target"
+      "noTarget": "No target",
+      "metrics": {
+        "balance": "Account balance",
+        "minimum": "Minimum balance",
+        "pnl": "Total P&L",
+        "days": "Trading days",
+        "target": "Target remaining",
+        "withdrawable": "Withdrawable share"
+      },
+      "legend": {
+        "balance": "Balance",
+        "minimum": "Minimum",
+        "target": "Target"
+      },
+      "range": {
+        "title": "Account position",
+        "mll": "Minimum",
+        "start": "Start",
+        "target": "Target",
+        "high": "High",
+        "drawdown": "Drawdown remaining",
+        "balance": "Balance",
+        "remaining": "Left to target",
+        "profit": "Profit"
+      },
+      "calendar": {
+        "title": "Trading calendar",
+        "pnl": "P&L",
+        "trades": "Trades",
+        "prev": "Previous month",
+        "next": "Next month",
+        "week": "Week",
+        "tradesCount": "{count, plural, =0 {No trades} one {# trade} other {# trades}}",
+        "noData": "No trading days this month."
+      },
+      "passedCard": {
+        "update": "Update",
+        "title": "Evaluation passed",
+        "desc": "Target reached while following every rule. Your funded account is ready to activate, free of charge.",
+        "cta": "Go Funded",
+        "ctaSoon": "Activation available with identity verification (KYC)."
+      }
     },
     "table": {
       "date": "Date",

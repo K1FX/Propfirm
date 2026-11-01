@@ -1,20 +1,23 @@
-import { ArrowLeft, CheckCircle2, Info, XCircle } from "lucide-react";
+import { ArrowLeft, Info, XCircle } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 
 import { AlertsList } from "@/components/dashboard/alerts-list";
+import { BalanceRange } from "@/components/dashboard/balance-range";
 import { EquityChart } from "@/components/dashboard/equity-chart";
 import { formatDay } from "@/components/dashboard/format";
+import { MetricTile } from "@/components/dashboard/metric-tile";
+import { PassedBanner } from "@/components/dashboard/passed-banner";
 import { RulesList } from "@/components/dashboard/rules-list";
-import { StatTile } from "@/components/dashboard/stat-tile";
 import { StatusBadge } from "@/components/dashboard/status-badge";
+import { TradingCalendar } from "@/components/dashboard/trading-calendar";
 import { TradesTable } from "@/components/dashboard/trades-table";
-import { Card, CardTitle } from "@/components/ui/card";
-import { ProgressBar } from "@/components/ui/progress-bar";
+import { Card } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { formatAccountSize, formatMoney } from "@/lib/format";
+import { getTradingDay } from "@/lib/session";
 import { getAccount } from "@/server/accounts/service";
 import { demoAccounts } from "@/server/demo/data";
 
@@ -40,9 +43,12 @@ export default async function AccountPage({
   const locale = await getLocale();
   const t = await getTranslations("Dashboard");
   const e = account.evaluation;
-  const money = (c: number, signed = false) => formatMoney(c, { locale, signed });
   const isEval = account.phase === "evaluation";
   const fatal = e.violations.find((v) => v.fatal);
+  const money = (c: number, signed = false) => formatMoney(c, { locale, signed, showCents: false });
+
+  const targetBalance = account.startBalance + account.plan.profitTarget;
+  const highWater = Math.max(account.startBalance, ...account.days.map((d) => d.closingBalance));
 
   const chartData = [
     {
@@ -56,6 +62,17 @@ export default async function AccountPage({
       threshold: h.threshold / 100,
     })),
   ];
+
+  const tradesPerDay = new Map<string, number>();
+  for (const tr of account.trades) {
+    const day = getTradingDay(new Date(tr.closedAt));
+    tradesPerDay.set(day, (tradesPerDay.get(day) ?? 0) + 1);
+  }
+  const calendarDays = account.days.map((d) => ({
+    day: d.day,
+    pnl: d.pnl,
+    trades: tradesPerDay.get(d.day) ?? 0,
+  }));
 
   return (
     <>
@@ -76,6 +93,7 @@ export default async function AccountPage({
         </div>
       </div>
 
+      {account.status === "passed" && <PassedBanner />}
       {fatal && (
         <p className="flex items-start gap-2.5 rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm">
           <XCircle className="mt-0.5 size-4 shrink-0 text-danger" aria-hidden />
@@ -83,12 +101,6 @@ export default async function AccountPage({
             date: formatDay(fatal.day, locale, "long"),
             reason: t(`violations.${fatal.type}`),
           })}
-        </p>
-      )}
-      {account.status === "passed" && (
-        <p className="flex items-start gap-2.5 rounded-xl border border-cyan/40 bg-cyan/10 px-4 py-3 text-sm">
-          <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-cyan" aria-hidden />
-          {t("account.passed")}
         </p>
       )}
       {!isEval && (
@@ -99,67 +111,99 @@ export default async function AccountPage({
       )}
       {account.status !== "breached" && e.alerts.length > 0 && <AlertsList accounts={[account]} />}
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatTile label={t("account.balance")} value={money(e.balance)} />
-        <StatTile
-          label={t("account.profit")}
-          value={money(e.profit, true)}
-          tone={e.profit >= 0 ? "cyan" : "danger"}
-        />
-        <StatTile
-          label={t("account.drawdown")}
-          value={money(e.drawdownRemaining)}
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+        <MetricTile label={t("account.metrics.balance")} value={money(e.balance)} />
+        <MetricTile
+          label={t("account.metrics.minimum")}
+          value={money(e.drawdownThreshold)}
+          tone="danger"
           hint={
             e.drawdownLocked
               ? t("account.locked", { amount: money(e.drawdownThreshold) })
-              : `${t("account.threshold")} ${money(e.drawdownThreshold)}`
+              : t("account.trailing")
           }
-          tone={e.drawdownUsedPct >= 80 ? "danger" : "default"}
         />
-        <StatTile label={t("account.tradingDays")} value={e.tradingDays} />
+        <MetricTile
+          label={t("account.metrics.pnl")}
+          value={money(e.profit, true)}
+          tone={e.profit >= 0 ? "cyan" : "danger"}
+        />
+        <MetricTile label={t("account.metrics.days")} value={e.tradingDays} />
+        {isEval ? (
+          <MetricTile
+            label={t("account.metrics.target")}
+            value={money(Math.max(0, account.plan.profitTarget - e.profit))}
+          />
+        ) : (
+          <MetricTile
+            label={t("account.metrics.withdrawable")}
+            value={money(account.payout?.traderShare ?? 0)}
+            tone="cyan"
+          />
+        )}
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
-        <Card className="flex flex-col gap-5 p-5">
-          <CardTitle>{t("account.equity")}</CardTitle>
-          <EquityChart
-            data={chartData}
-            target={isEval ? (account.startBalance + account.plan.profitTarget) / 100 : null}
-            locale={locale}
-            title={t("account.equity")}
-            labels={{
-              balance: t("account.chartBalance"),
-              threshold: t("account.chartThreshold"),
-              target: t("account.chartTarget"),
-            }}
-          />
-          <div className="grid gap-5 sm:grid-cols-2">
-            {isEval ? (
-              <ProgressBar
-                value={e.targetProgressPct}
-                label={t("account.target")}
-                valueLabel={`${money(Math.max(0, e.profit))} / ${money(account.plan.profitTarget)}`}
-              />
-            ) : (
-              <ProgressBar
-                value={0}
-                label={t("account.target")}
-                valueLabel={t("account.noTarget")}
-              />
-            )}
-            <ProgressBar
-              value={e.drawdownUsedPct}
-              tone="danger"
-              label={t("account.drawdown")}
-              valueLabel={`${money(e.drawdownRemaining)} / ${money(account.plan.maxDrawdown)}`}
-            />
-          </div>
+      <Card className="p-5 sm:p-6">
+        <EquityChart
+          data={chartData}
+          target={isEval ? targetBalance / 100 : null}
+          locale={locale}
+          title={t("account.equity")}
+          labels={{
+            balance: t("account.legend.balance"),
+            threshold: t("account.legend.minimum"),
+            target: t("account.legend.target"),
+          }}
+        />
+      </Card>
+
+      <Card className="p-5 sm:p-6">
+        <h2 className="mb-4 label-caps">{t("account.range.title")}</h2>
+        <BalanceRange
+          min={e.drawdownThreshold}
+          start={account.startBalance}
+          max={isEval ? targetBalance : Math.max(highWater, e.balance)}
+          balance={e.balance}
+          format={(c) => money(c)}
+          labels={{
+            min: t("account.range.mll"),
+            start: t("account.range.start"),
+            max: isEval ? t("account.range.target") : t("account.range.high"),
+          }}
+          stats={[
+            {
+              label: t("account.range.drawdown"),
+              value: money(e.drawdownRemaining),
+              tone: e.drawdownUsedPct >= 80 ? "danger" : "default",
+            },
+            {
+              label: t("account.range.balance"),
+              value: money(e.balance),
+              tone: e.profit >= 0 ? "cyan" : "danger",
+            },
+            isEval
+              ? {
+                  label: t("account.range.remaining"),
+                  value: money(Math.max(0, targetBalance - e.balance)),
+                }
+              : {
+                  label: t("account.range.profit"),
+                  value: money(Math.max(0, e.profit)),
+                  tone: "cyan",
+                },
+          ]}
+        />
+      </Card>
+
+      <div className="grid gap-5 xl:grid-cols-[1.7fr_1fr]">
+        <Card className="p-5 sm:p-6">
+          <TradingCalendar days={calendarDays} locale={locale} />
         </Card>
         <RulesList account={account} />
       </div>
 
       <section aria-labelledby="trades-title" className="flex flex-col gap-4">
-        <h2 id="trades-title" className="font-display text-lg font-semibold">
+        <h2 id="trades-title" className="label-caps">
           {t("account.trades")}
         </h2>
         {account.trades.length > 0 ? (

@@ -257,7 +257,48 @@
       "pending": "En cours",
       "ko": "Non respectée",
       "warning": "Avertissement",
-      "noTarget": "Sans objectif"
+      "noTarget": "Sans objectif",
+      "metrics": {
+        "balance": "Solde du compte",
+        "minimum": "Solde minimum",
+        "pnl": "P&L total",
+        "days": "Jours de trading",
+        "target": "Objectif restant",
+        "withdrawable": "Part retirable"
+      },
+      "legend": {
+        "balance": "Solde",
+        "minimum": "Minimum",
+        "target": "Objectif"
+      },
+      "range": {
+        "title": "Position du compte",
+        "mll": "Minimum",
+        "start": "Départ",
+        "target": "Objectif",
+        "high": "Plus haut",
+        "drawdown": "Drawdown restant",
+        "balance": "Solde",
+        "remaining": "Reste pour l'objectif",
+        "profit": "Profit"
+      },
+      "calendar": {
+        "title": "Calendrier de trading",
+        "pnl": "P&L",
+        "trades": "Trades",
+        "prev": "Mois précédent",
+        "next": "Mois suivant",
+        "week": "Semaine",
+        "tradesCount": "{count, plural, =0 {Aucun trade} one {# trade} other {# trades}}",
+        "noData": "Aucun jour de trading ce mois-ci."
+      },
+      "passedCard": {
+        "update": "Mise à jour",
+        "title": "Évaluation réussie",
+        "desc": "Objectif atteint en respectant toutes les règles. Votre compte financé est prêt à être activé, sans frais.",
+        "cta": "Passer en Funded",
+        "ctaSoon": "Activation disponible avec la vérification d'identité (KYC)."
+      }
     },
     "table": {
       "date": "Date",

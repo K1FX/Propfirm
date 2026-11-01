@@ -253,3 +253,65 @@ html {
     200% 100%;
   animation: holo-shift 8s linear infinite;
 }
+
+/* ---------- Contour lumineux animé (compte validé) ---------- */
+
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes glow-spin {
+  to {
+    --glow-angle: 360deg;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 55px rgba(34, 211, 238, 0.38);
+  }
+}
+
+@utility animated-glow {
+  position: relative;
+  isolation: isolate;
+  animation: glow-pulse 3s ease-in-out infinite;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: 1;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--glow-angle),
+      transparent 0 55%,
+      #0a5f74 65%,
+      #67e8f9 80%,
+      #22d3ee 88%,
+      transparent 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: glow-spin 4s linear infinite;
+    pointer-events: none;
+  }
+}
+
+@utility label-caps {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}

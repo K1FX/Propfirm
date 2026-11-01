@@ -14,6 +14,7 @@ describe("comptes de démonstration", () => {
     const byId = Object.fromEntries(accounts.map((a) => [a.id, a]));
     expect(byId["ACC-50K-1042"]?.status).toBe("evaluation");
     expect(byId["ACC-150K-2071"]?.status).toBe("evaluation");
+    expect(byId["ACC-100K-3310"]?.status).toBe("passed");
     expect(byId["ACC-50K-0815"]?.status).toBe("funded");
     expect(byId["ACC-25K-0377"]?.status).toBe("breached");
   });

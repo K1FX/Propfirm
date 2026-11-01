@@ -44,6 +44,18 @@ export const demoAccounts: readonly DemoAccount[] = [
     },
   },
   {
+    id: "ACC-100K-3310",
+    planId: "100k",
+    phase: "evaluation",
+    purchasedAt: "2026-10-12",
+    scenario: {
+      seed: 3310,
+      dailyPnl: [1_200, 900, 1_500, -300, 1_400, 1_350],
+      endDay: "2026-10-27",
+      symbols: ["ES", "NQ", "MES"],
+    },
+  },
+  {
     id: "ACC-50K-0815",
     planId: "50k",
     phase: "funded",

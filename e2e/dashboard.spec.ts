@@ -13,7 +13,7 @@ test("page compte : graphique, règles et trades", async ({ page }) => {
   await page.goto("/fr/dashboard/accounts/ACC-50K-1042");
   await expect(page.getByRole("heading", { name: "Règles du compte" })).toBeVisible();
   await expect(page.getByRole("figure", { name: /Évolution du solde/ })).toBeVisible();
-  await expect(page.getByRole("table")).toBeVisible();
+  await expect(page.getByRole("table", { name: /Trades fermés/ })).toBeVisible();
 });
 
 test("compte éliminé : message explicite", async ({ page }) => {
@@ -34,4 +34,12 @@ test("compte inconnu → page introuvable", async ({ page }) => {
   // statique) avant d'afficher la page 404 : on vérifie donc ce que voit l'utilisateur.
   await page.goto("/fr/dashboard/accounts/NOPE");
   await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
+});
+
+test("compte réussi : encadré « Passer en Funded » et calendrier", async ({ page }) => {
+  await page.goto("/fr/dashboard/accounts/ACC-100K-3310");
+  await expect(page.getByRole("heading", { name: "Évaluation réussie" })).toBeVisible();
+  await expect(page.getByText("Calendrier de trading")).toBeVisible();
+  await page.getByRole("tab", { name: "Trades" }).click();
+  await expect(page.getByRole("tab", { name: "Trades" })).toHaveAttribute("aria-selected", "true");
 });
