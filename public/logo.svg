@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="512" height="512">
+  <defs>
+    <linearGradient id="chr" x1="0" y1="0" x2="0" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset="0.3" stop-color="#A9B0B9"/>
+      <stop offset="0.5" stop-color="#F4F6F8"/><stop offset="0.78" stop-color="#666D76"/>
+      <stop offset="1" stop-color="#D9DDE3"/>
+    </linearGradient>
+    <radialGradient id="cy" cx="0.38" cy="0.32" r="0.8">
+      <stop offset="0" stop-color="#F2FEFF"/><stop offset="0.3" stop-color="#9BEFFB"/>
+      <stop offset="0.7" stop-color="#1FB8D6"/><stop offset="1" stop-color="#0A5F74"/>
+    </radialGradient>
+    <radialGradient id="pe" cx="0.38" cy="0.32" r="0.8">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset="0.45" stop-color="#DDE2E8"/>
+      <stop offset="0.85" stop-color="#8F98A3"/><stop offset="1" stop-color="#5E656E"/>
+    </radialGradient>
+    <filter id="bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="gl" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#22D3EE" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <g filter="url(#gl)">
+    <g transform="rotate(45 100 100)">
+      <ellipse cx="100" cy="48" rx="30" ry="40" fill="url(#cy)" stroke="url(#chr)" stroke-width="5"/>
+      <ellipse cx="100" cy="48" rx="30" ry="40" fill="url(#cy)" stroke="url(#chr)" stroke-width="5" transform="rotate(90 100 100)"/>
+      <ellipse cx="100" cy="48" rx="30" ry="40" fill="url(#cy)" stroke="url(#chr)" stroke-width="5" transform="rotate(180 100 100)"/>
+      <ellipse cx="100" cy="48" rx="30" ry="40" fill="url(#cy)" stroke="url(#chr)" stroke-width="5" transform="rotate(270 100 100)"/>
+    </g>
+    <circle cx="100" cy="100" r="34" fill="url(#pe)" stroke="url(#chr)" stroke-width="6"/>
+    <path d="M100 76 C103 92 108 97 124 100 C108 103 103 108 100 124 C97 108 92 103 76 100 C92 97 97 92 100 76 Z"
+          fill="url(#cy)" stroke="url(#chr)" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="62" cy="58" rx="9" ry="5" fill="#FFFFFF" opacity="0.7" filter="url(#bl)" transform="rotate(-40 62 58)"/>
+    <ellipse cx="90" cy="86" rx="8" ry="4" fill="#FFFFFF" opacity="0.8" filter="url(#bl)"/>
+  </g>
+</svg>

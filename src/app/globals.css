@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens – voir CLAUDE.md §3.1.
+ * Les noms shadcn/ui (background, card, primary…) pointent vers nos tokens
+ * pour que les composants shadcn adoptent le design system sans modification.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palette de marque */
+  --bg: #08090b;
+  --bg-elevated: #0c0e12;
+  --surface: #111317;
+  --border: #262a31;
+  --text: #eceff3;
+  --text-muted: #8e95a1;
+  --cyan: #22d3ee;
+  --cyan-light: #67e8f9;
+  --cyan-deep: #0a5f74;
+  --danger: #ff4d6a;
+  --success: #22d3ee;
+
+  /* Rangs du Pass */
+  --rank-bronze: #c98a5a;
+  --rank-silver: #b8c0cc;
+  --rank-gold: #e8b04a;
+  --rank-platinum: #7fe3d0;
+  --rank-elite: #22d3ee;
+
+  /* Mapping shadcn/ui */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+  --primary: #d5dae1;
+  --primary-foreground: #0b0d10;
+  --secondary: var(--bg-elevated);
+  --secondary-foreground: var(--text);
+  --muted: var(--bg-elevated);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--cyan);
+  --accent-foreground: #0b0d10;
+  --destructive: var(--danger);
+  --input: var(--border);
+  --ring: var(--cyan);
+
+  --radius: 1rem;
+
+  color-scheme: dark;
 }
 
 @theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-cyan: var(--cyan);
+  --color-cyan-light: var(--cyan-light);
+  --color-cyan-deep: var(--cyan-deep);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+
+  --color-rank-bronze: var(--rank-bronze);
+  --color-rank-silver: var(--rank-silver);
+  --color-rank-gold: var(--rank-gold);
+  --color-rank-platinum: var(--rank-platinum);
+  --color-rank-elite: var(--rank-elite);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: 0.625rem; /* 10px – boutons */
+  --radius-md: 0.75rem; /* 12px – boutons */
+  --radius-lg: 1rem; /* 16px – cartes */
+  --radius-xl: 1.25rem; /* 20px – cartes */
+
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-sora);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-manrope), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-sora), system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility text-chrome {
+  background: linear-gradient(180deg, #ffffff 0%, #d5dae1 50%, #8c939d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility glow-cyan {
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.22);
+}
+
+@utility tabular {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
 }

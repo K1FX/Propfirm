@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# [NOM] · Prop firm Futures
 
-## Getting Started
+Référence du projet : [`CLAUDE.md`](./CLAUDE.md).
 
-First, run the development server:
+## Démarrer en local
+
+Prérequis : Node.js 20+ et pnpm 10+.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+cp .env.example .env.local   # puis remplir les valeurs (facultatif en Phase 0)
+pnpm dev                     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Commande                                        | Rôle                                                       |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| `pnpm dev`                                      | Serveur de développement                                   |
+| `pnpm build` / `pnpm start`                     | Build et serveur de production                             |
+| `pnpm lint`                                     | ESLint                                                     |
+| `pnpm typecheck`                                | Génère les types de routes puis `tsc --noEmit`             |
+| `pnpm format`                                   | Prettier (+ tri des classes Tailwind)                      |
+| `pnpm test`                                     | Tests unitaires Vitest                                     |
+| `pnpm test:e2e`                                 | Tests Playwright (lance `build` + `start` automatiquement) |
+| `pnpm db:generate` / `db:migrate` / `db:studio` | Drizzle (à partir de la Phase 3)                           |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Première exécution de Playwright sur une nouvelle machine : `pnpm exec playwright install chromium`.
 
-## Learn More
+## Notes techniques
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 16 : le middleware s'appelle `src/proxy.ts`. Cache Components est activé.
+- shadcn/ui est configuré à la main (`components.json`). Ajouter un composant : `pnpm dlx shadcn@latest add button`.
+- Langues : `/fr` (défaut) et `/en`. La racine `/` redirige selon la langue du navigateur.

@@ -1,0 +1,27 @@
+{
+  "Metadata": {
+    "description": "Prop firm spécialisée dans les futures CME. Évaluation en 1 étape, compte financé simulé, progression avec le {passName}."
+  },
+  "Home": {
+    "badge": "Prop firm futures · Marchés CME",
+    "title": "Tradez les futures avec notre capital simulé",
+    "subtitle": "Site en construction – Phase 0 : fondations techniques en place.",
+    "dashboard": "Espace trader",
+    "admin": "Back-office"
+  },
+  "Placeholder": {
+    "dashboard": "Espace trader – à venir (Phase 5)",
+    "admin": "Back-office – à venir (Phase 8)",
+    "back": "Retour à l'accueil"
+  },
+  "Legal": {
+    "disclaimer": "Tous les comptes fournis sont des comptes de trading simulés. {brand} n'est pas un courtier et ne reçoit aucun dépôt de clients. Les performances passées ne préjugent pas des performances futures."
+  },
+  "NotFound": {
+    "title": "Page introuvable",
+    "back": "Retour à l'accueil"
+  },
+  "LocaleSwitcher": {
+    "label": "Langue"
+  }
+}

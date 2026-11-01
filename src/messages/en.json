@@ -1,0 +1,27 @@
+{
+  "Metadata": {
+    "description": "Futures prop firm for CME markets. 1-step evaluation, simulated funded account, progression with the {passName}."
+  },
+  "Home": {
+    "badge": "Futures prop firm · CME markets",
+    "title": "Trade futures with our simulated capital",
+    "subtitle": "Site under construction – Phase 0: technical foundations in place.",
+    "dashboard": "Trader area",
+    "admin": "Back office"
+  },
+  "Placeholder": {
+    "dashboard": "Trader area – coming soon (Phase 5)",
+    "admin": "Back office – coming soon (Phase 8)",
+    "back": "Back to home"
+  },
+  "Legal": {
+    "disclaimer": "All accounts provided are simulated trading accounts. {brand} is not a broker and does not accept customer deposits. Past performance is not indicative of future results."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  },
+  "LocaleSwitcher": {
+    "label": "Language"
+  }
+}
